@@ -9,13 +9,13 @@
 </head>
 <body class="font-sans antialiased text-gray-900 bg-[#f8faf9]">
 
-    @include('partials.navbar')
+    @include('user.partials.navbar')
 
     <main>
         @yield('content')
     </main>
 
-    @include('partials.footer')
+    @include('user.partials.footer')
 
 </body>
 </html>
