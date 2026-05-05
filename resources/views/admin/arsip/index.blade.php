@@ -2,72 +2,113 @@
 
 @section('content')
 <div class="space-y-6 animate-in fade-in duration-500">
-    <div class="flex items-center justify-between">
-        <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Arsip Dokumen</h1>
-        <a href="{{ route('admin.arsip.tambah') }}" class="bg-[#0a362d] text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-[#082a23] transition-all shadow-lg shadow-[#0a362d]/20 active:scale-95">
-            <i class="fa-solid fa-plus text-[10px]"></i> TAMBAH ARSIP
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
+        <div>
+            <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Arsip Dokumen</h1>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1 italic">Pusat penyimpanan dokumen & laporan UKM PROTIC</p>
+        </div>
+        <a href="{{ route('admin.arsip.tambah') }}"
+            class="bg-[#0a362d] text-white px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-[#082a23] transition-all shadow-lg shadow-[#0a362d]/20 active:scale-95 border-b-4 border-[#061d18]">
+            <i class="fa-solid fa-cloud-arrow-up text-sm"></i> Tambah Arsip
         </a>
     </div>
 
-    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div>
+                <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest">Laporan & Proposal</p>
+                <h4 class="text-lg font-black text-[#0a362d]">{{ $arsip->whereIn('kategori', ['LAPORAN', 'PROPOSAL'])->count() }}</h4>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <div>
+                <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest">Surat Menyurat</p>
+                <h4 class="text-lg font-black text-[#0a362d]">{{ $arsip->where('kategori', 'SURAT')->count() }}</h4>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-box-archive"></i>
+            </div>
+            <div>
+                <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest">Total Arsip</p>
+                <h4 class="text-lg font-black text-[#0a362d]">{{ $arsip->count() }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/30">
+            <h4 class="font-black text-[#0a362d] uppercase text-[10px] tracking-[0.2em]">Daftar Dokumen Digital</h4>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-gray-50/80 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] border-b border-gray-100">
+                    <tr class="bg-gray-50/50 text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] border-b border-gray-100">
                         <th class="px-8 py-5">Nama Dokumen</th>
                         <th class="px-8 py-5">Kategori</th>
-                        <th class="px-8 py-5">Ukuran</th>
-                        <th class="px-8 py-5">Tgl Upload</th>
+                        <th class="px-8 py-5">Status</th>
                         <th class="px-8 py-5 text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-[11px] font-bold text-[#0a362d] divide-y divide-gray-50">
-                    {{-- LIMIT DATA: 6 Baris agar no-scroll --}}
-                    @for ($i = 0; $i < 6; $i++)
-                    <tr class="hover:bg-gray-50/30 transition-colors group">
-                        <td class="px-8 py-4">
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-file-pdf text-red-400 text-base"></i>
-                                <span class="uppercase tracking-tighter">Surat Peminjaman Ruangan</span>
-                            </div>
+                <tbody class="text-[10px] font-bold text-[#0a362d]">
+                    @forelse ($arsip as $item)
+                    <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition-all group">
+                        <td class="px-8 py-5">
+                            <span class="block uppercase font-black text-[#0a362d]">{{ $item->nama_dokumen }}</span>
+                            <span class="text-[8px] text-gray-400 font-bold uppercase tracking-wider italic">
+                                Diupload: {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
+                            </span>
                         </td>
-                        <td class="px-8 py-4">
-                            <span class="text-gray-400 uppercase text-[9px] tracking-widest bg-gray-50 px-2 py-1 rounded">Surat</span>
+                        <td class="px-8 py-5">
+                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-tighter">
+                                {{ $item->kategori }}
+                            </span>
                         </td>
-                        <td class="px-8 py-4 text-gray-400 font-medium tracking-widest">450KB</td>
-                        <td class="px-8 py-4 text-gray-400 font-medium italic">14 April 2026</td>
-                        <td class="px-8 py-4 text-center">
-                            <div class="flex items-center justify-center gap-4">
-                                <a href="#" class="text-gray-300 hover:text-[#0a362d] transition-colors text-[10px] uppercase tracking-tighter">Unduh</a>
-                                <button class="text-red-300 hover:text-red-600 transition-colors text-[10px] uppercase tracking-tighter">Hapus</button>
+                        <td class="px-8 py-5">
+                            @if($item->status == 'PUBLIK')
+                                <span class="text-emerald-600 flex items-center gap-1 uppercase tracking-widest text-[8px]">
+                                    <i class="fa-solid fa-eye text-[10px]"></i> {{ $item->status }}
+                                </span>
+                            @else
+                                <span class="text-amber-600 flex items-center gap-1 uppercase tracking-widest text-[8px]">
+                                    <i class="fa-solid fa-lock text-[10px]"></i> {{ $item->status }}
+                                </span>
+                            @endif
+                        </td>
+                        <td class="px-8 py-5">
+                            <div class="flex items-center justify-center gap-2">
+                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank"
+                                    class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center border border-emerald-100 shadow-sm">
+                                    <i class="fa-solid fa-download text-xs"></i>
+                                </a>
+
+                                <form action="#" method="POST" onsubmit="return confirm('Hapus dokumen ini?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center border border-rose-100 shadow-sm">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
-                    @endfor
+                    @empty
+                    <tr>
+                        <td colspan="4" class="px-6 py-16 text-center text-gray-300 uppercase text-[9px] tracking-widest italic font-bold">
+                            <i class="fa-solid fa-folder-open text-3xl mb-3 block opacity-20"></i>
+                            Belum ada dokumen yang diarsip
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
-        </div>
-
-        <div class="p-6 bg-white border-t border-gray-50 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p class="text-[10px] text-gray-300 font-black uppercase tracking-[0.2em]">
-                Menampilkan 1-6 dari 55 Item
-            </p>
-
-            <div class="flex items-center gap-3">
-                <button class="px-4 py-2 text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-[#0a362d] transition-all">
-                    <i class="fa-solid fa-chevron-left mr-1"></i> Kembali
-                </button>
-
-                <div class="flex items-center gap-2">
-                    <button class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#0a362d] text-white text-[10px] font-black shadow-lg shadow-[#0a362d]/20">1</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:bg-gray-50 text-[10px] font-bold transition-colors">2</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:bg-gray-50 text-[10px] font-bold transition-colors">3</button>
-                </div>
-
-                <button class="px-4 py-2 text-[10px] font-black text-[#0a362d] uppercase tracking-widest hover:translate-x-1 transition-all">
-                    Lanjut <i class="fa-solid fa-chevron-right ml-1"></i>
-                </button>
-            </div>
         </div>
     </div>
 </div>

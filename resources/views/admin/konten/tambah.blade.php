@@ -1,7 +1,6 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-{{-- Alert Error --}}
 @if ($errors->any())
     <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
         <p class="text-[10px] font-black text-red-600 uppercase tracking-widest">Terjadi Kesalahan:</p>
@@ -16,7 +15,6 @@
 <form action="{{ route('admin.konten.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 pb-2 animate-in fade-in duration-500">
     @csrf
 
-    {{-- Header Form --}}
     <div class="flex items-center justify-between">
         <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Buat Konten Baru</h1>
         <div class="flex items-center gap-3">
@@ -29,20 +27,23 @@
         </div>
     </div>
 
-    {{-- Section 1: Detail Konten --}}
     <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Judul Konten</label>
-                <input type="text" name="judul" value="{{ old('judul') }}" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all" placeholder="Masukkan judul konten...">
+                <input type="text" name="judul" value="{{ old('judul') }}" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase placeholder:uppercase" placeholder="Masukkan judul konten...">
             </div>
+            <div>
+    <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Sub Judul</label>
+    <input type="text" name="sub_judul" value="{{ old('sub_judul', $konten->sub_judul ?? '') }}" class="w-full bg-gray-50 border border-gray-100 py-2.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase" placeholder="CONTOH: LOMBA WEB DESIGN NASIONAL">
+</div>
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Kategori</label>
                 <div class="relative">
-                    <select name="kategori" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-4 rounded-xl text-[11px] font-bold focus:outline-none appearance-none cursor-pointer">
-                        <option value="" disabled selected>Pilih Kategori</option>
-                        <option value="Proker" {{ old('kategori') == 'Proker' ? 'selected' : '' }}>PROKER</option>
-                        <option value="Prestasi" {{ old('kategori') == 'Prestasi' ? 'selected' : '' }}>PRESTASI</option>
+                    <select name="kategori" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-4 rounded-xl text-[11px] font-bold focus:outline-none appearance-none cursor-pointer uppercase">
+                        <option value="" disabled selected class="uppercase">Pilih Kategori</option>
+                        <option value="Proker" {{ old('kategori') == 'Proker' ? 'selected' : '' }} class="uppercase">PROKER</option>
+                        <option value="Prestasi" {{ old('kategori') == 'Prestasi' ? 'selected' : '' }} class="uppercase">PRESTASI</option>
                     </select>
                     <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
                         <i class="fa-solid fa-chevron-down text-[10px]"></i>
@@ -53,13 +54,11 @@
 
         <div>
             <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Isi Konten</label>
-            <textarea name="isi" rows="6" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all resize-none" placeholder="Tuliskan isi konten di sini...">{{ old('isi') }}</textarea>
+            <textarea name="isi" rows="6" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all resize-none uppercase placeholder:uppercase" placeholder="Tuliskan isi konten di sini...">{{ old('isi') }}</textarea>
         </div>
     </div>
 
-    {{-- Section 2: Upload & Meta --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {{-- Upload Gambar --}}
         <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
              <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-3">Upload Thumbnail</label>
              <label class="relative flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 rounded-[1.5rem] cursor-pointer hover:bg-gray-50 transition-all group">
@@ -72,13 +71,12 @@
             </label>
         </div>
 
-        {{-- Meta Data --}}
         <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2">Penulis Default</label>
                     <div class="flex items-center gap-3 bg-gray-50 py-2.5 px-4 rounded-xl border border-gray-100">
-                        <div class="w-6 h-6 bg-[#0a362d] rounded-lg flex items-center justify-center text-white text-[10px] font-black">D</div>
+                        <div class="w-6 h-6 bg-[#0a362d] rounded-lg flex items-center justify-center text-white text-[10px] font-black uppercase">D</div>
                         <input type="text" class="bg-transparent border-none text-[11px] font-bold text-gray-400 italic outline-none w-full uppercase" value="DIMAS RIYAN WIRAYUDA" readonly>
                     </div>
                 </div>
@@ -101,7 +99,7 @@
         const input = document.getElementById('gambarInput');
         const fileName = document.getElementById('fileName');
         if (input.files.length > 0) {
-            fileName.textContent = "FILE TERPILIH: " + input.files[0].name;
+            fileName.textContent = "FILE TERPILIH: " + input.files[0].name.toUpperCase();
         }
     }
 </script>

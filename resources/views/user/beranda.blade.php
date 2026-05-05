@@ -3,7 +3,6 @@
 @section('title', 'Beranda - UKM PROTIC PNC')
 
 @section('content')
-{{-- HEADER HERO --}}
 <header class="relative min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#f8faf9]">
     <div class="absolute inset-0 z-0">
         <img src="{{ asset('img/header.JPG') }}" class="w-full h-full object-cover opacity-10 scale-105">
@@ -13,14 +12,14 @@
         </div>
     </div>
 
-    <div class="relative z-10 px-4 max-w-5xl mx-auto">
+    <div class="relative z-20 px-4 max-w-5xl mx-auto w-full">
         <div class="inline-flex items-center gap-3 border border-[#0a362d]/10 bg-white/50 backdrop-blur-sm px-6 py-2 rounded-full mb-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 group cursor-default">
             <span class="relative flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
             </span>
             <span class="text-[#0a362d] text-[10px] font-bold tracking-[0.3em] uppercase transition-colors duration-300 group-hover:text-amber-600">
-                UKM PROTIC PNC 25/26
+                UKM PROTIC PNC {{ substr($periodeTerbaru, -2) }}/{{ substr($periodeTerbaru + 1, -2) }}
             </span>
         </div>
 
@@ -41,7 +40,6 @@
     </div>
 </header>
 
-{{-- SECTION VIDEO PROFILE --}}
 <section class="py-32 bg-white relative overflow-hidden">
     <div class="absolute top-0 right-0 w-64 h-64 bg-green-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50"></div>
     <div class="container mx-auto px-6 lg:px-20 relative z-10">
@@ -67,7 +65,7 @@
                     <div class="h-[2px] w-12 bg-amber-500"></div>
                     <span class="text-emerald-600 font-black uppercase tracking-[0.3em] text-[10px]">Who We Are</span>
                 </div>
-                <h3 class="text-5xl lg:text-6xl font-black text-[#0a362d] mb-8 leading-tight">Video <br><span class="text-amber-500 italic">Profile</span></h3>
+                <h3 class="text-5xl lg:text-6xl font-black text-[#0a362d] mb-8 leading-tight uppercase">Video <br><span class="text-amber-500 italic">Profile</span></h3>
                 <p class="text-gray-500 leading-relaxed text-lg font-medium italic text-justify">
                     Unit Kegiatan Mahasiswa <span class="font-bold text-[#0a362d] not-italic border-b-2 border-amber-500/30">Programming Technology Informatics Club</span>
                     mewadahi minat dan bakat mahasiswa Politeknik Negeri Cilacap dalam bidang
@@ -78,25 +76,24 @@
     </div>
 </section>
 
-{{-- SECTION BERITA TERBARU (DINAMIS) --}}
 <section class="py-32 bg-[#f8faf9] relative">
     <div class="container mx-auto px-6 lg:px-20">
         <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div class="text-left">
                 <div class="inline-flex items-center gap-4 mb-4">
                     <div class="h-[2px] w-12 bg-amber-500"></div>
-                    <span class="text-emerald-600 font-black uppercase tracking-[0.3em] text-[10px]">Latest Update</span>
+                    <span class="text-emerald-600 font-black uppercase tracking-[0.3em] text-[10px]">OUR ACTIVITIES</span>
                 </div>
-                <h3 class="text-5xl font-black text-[#0a362d] uppercase tracking-tighter">Berita <span class="text-amber-500 italic lowercase" style="text-transform: none;">&</span> Informasi</h3>
+                <h3 class="text-5xl font-black text-[#0a362d] uppercase tracking-tighter">Program kerja</h3>
             </div>
-            <a href="{{ route('beranda') }}" class="group flex items-center gap-4 bg-white border border-gray-100 px-8 py-4 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <span class="text-[11px] font-black uppercase tracking-widest text-[#0a362d]">Lihat Semua Berita</span>
+            <a href="{{ route('proker') }}" class="group flex items-center gap-4 bg-white border border-gray-100 px-8 py-4 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <span class="text-[11px] font-black uppercase tracking-widest text-[#0a362d]">Lihat Semua Kegiatan</span>
                 <i class="fa-solid fa-arrow-right text-amber-500 transition-transform group-hover:translate-x-2"></i>
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            @forelse($berita as $item)
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+            @forelse($proker as $item)
             <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group border border-gray-100 flex flex-col h-full">
                 <div class="relative h-64 overflow-hidden shrink-0">
                     @if($item->gambar)
@@ -107,7 +104,7 @@
                         </div>
                     @endif
                     <div class="absolute top-6 left-6">
-                        <span class="bg-amber-500 text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                        <span class="bg-[#0a362d] text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
                             {{ $item->kategori }}
                         </span>
                     </div>
@@ -122,22 +119,21 @@
                         {{ $item->judul }}
                     </h4>
                     <a href="{{ route('konten.detail', $item->slug) }}" class="inline-flex items-center gap-3 text-amber-600 font-black text-[11px] uppercase tracking-[0.2em] group/link">
-                        Baca Selengkapnya
+                        Detail Kegiatan
                         <div class="h-[2px] w-6 bg-amber-500 transition-all duration-300 group-hover/link:w-12"></div>
                     </a>
                 </div>
             </div>
             @empty
-            <div class="col-span-3 text-center py-20 bg-white rounded-[2.5rem] border-2 border-dashed border-gray-100">
-                <i class="fa-solid fa-newspaper text-gray-200 text-6xl mb-6"></i>
-                <p class="text-gray-400 font-bold uppercase tracking-widest text-xs">Belum ada berita yang diterbitkan.</p>
+            <div class="col-span-4 text-center py-20 bg-white rounded-[2.5rem] border-2 border-dashed border-gray-100">
+                <i class="fa-solid fa-calendar-xmark text-gray-200 text-6xl mb-6"></i>
+                <p class="text-gray-400 font-bold uppercase tracking-widest text-xs">Belum ada program kerja yang ditampilkan.</p>
             </div>
             @endforelse
         </div>
     </div>
 </section>
 
-{{-- SECTION PRESTASI (GRID COMPACT) --}}
 <section class="py-32 bg-white">
     <div class="container mx-auto px-6 lg:px-20">
         <div class="text-center max-w-2xl mx-auto mb-20">
@@ -146,15 +142,16 @@
                 <span class="text-emerald-600 font-black uppercase tracking-[0.3em] text-[10px]">Our Achievements</span>
                 <div class="h-[2px] w-12 bg-amber-500"></div>
             </div>
-            <h3 class="text-5xl font-black text-[#0a362d] uppercase tracking-tighter mb-6">Prestasi <span class="text-amber-500 italic">Terbaik</span></h3>
-            <p class="text-gray-500 text-sm font-medium italic tracking-wide uppercase">Hasil dedikasi dan kerja keras seluruh anggota dalam berinovasi.</p>
+            <h3 class="text-5xl font-black text-[#0a362d] uppercase tracking-tighter mb-6">Prestasi Kami</h3>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            @foreach($prestasi as $item)
+            @forelse($prestasi as $item)
             <div class="relative group h-80 rounded-[2rem] overflow-hidden shadow-xl">
                 @if($item->gambar)
                     <img src="{{ asset('storage/' . $item->gambar) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125">
+                @else
+                    <div class="w-full h-full bg-gray-200"></div>
                 @endif
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d] via-[#0a362d]/40 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 p-8 w-full">
@@ -164,7 +161,11 @@
                     </h4>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-4 text-center py-10">
+                <p class="text-gray-400 font-bold uppercase tracking-widest text-[10px]">Data prestasi belum tersedia.</p>
+            </div>
+            @endforelse
         </div>
     </div>
 </section>

@@ -36,26 +36,40 @@
 
                     @forelse($data['members'] as $member)
                     <div class="member-item w-full sm:w-1/2 md:w-1/4 flex-shrink-0 px-3 py-4">
-
                         <div class="group relative bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-3 shadow-2xl transition-all duration-500 hover:bg-white/10 hover:-translate-y-4 hover:border-amber-500/50">
 
                             <div class="relative overflow-hidden rounded-2xl mb-5 shadow-inner">
-                                <img src="{{ asset('img/member/' . $member['img']) }}"
-                                     class="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-110"
-                                     alt="{{ $member['name'] }}">
-
+                                <img src="{{ asset('storage/' . $member->foto) }}" class="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ $member->nama }}">
                                 <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             </div>
 
                             <div class="text-center pb-4">
                                 <div class="w-8 h-[2px] bg-amber-500 mx-auto mb-3 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
 
-                                <h4 class="font-black text-white text-xs uppercase tracking-wider leading-tight px-2 group-hover:text-amber-400 transition-colors">
-                                    {{ $member['name'] }}
+                                <h4 class="font-black text-white text-[10px] uppercase tracking-wider leading-tight px-2 group-hover:text-amber-400 transition-colors truncate" title="{{ $member->nama }}">
+                                    @php
+                                        $fullName = $member->nama;
+                                        $names = explode(' ', $fullName);
+                                        $count = count($names);
+                                        $threshold = 25;
+
+                                        if (strlen($fullName) > $threshold && $count > 1) {
+                                            $processedName = "";
+                                            // Gabungkan semua kata kecuali kata terakhir
+                                            for ($i = 0; $i < $count - 1; $i++) {
+                                                $processedName .= $names[$i] . " ";
+                                            }
+                                            // Tambahkan inisial kata terakhir
+                                            $processedName .= substr($names[$count - 1], 0, 1) . ".";
+                                        } else {
+                                            $processedName = $fullName;
+                                        }
+                                    @endphp
+                                    {{ trim($processedName) }}
                                 </h4>
 
-                                <div class="mt-3 inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-amber-500 text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-amber-500 group-hover:text-[#0a362d] transition-all duration-500">
-                                    {{ $member['role'] }}
+                                <div class="mt-3 inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-amber-500 text-[8px] font-bold uppercase tracking-[0.2em] group-hover:bg-amber-500 group-hover:text-[#0a362d] transition-all duration-500">
+                                    {{ $member->jabatan }}
                                 </div>
                             </div>
 
@@ -63,7 +77,7 @@
                         </div>
                     </div>
                     @empty
-                    <div class="w-full text-center text-white py-10 opacity-60 italic">Belum ada data anggota.</div>
+                    <div class="w-full text-center text-white py-10 opacity-60 italic uppercase">Belum ada data pengurus di periode ini.</div>
                     @endforelse
 
                 </div>
@@ -84,33 +98,33 @@
 <script>
     let currentPos = 0;
     const slider = document.getElementById('memberSlider');
-    const items = document.querySelectorAll('.member-item');
-    const totalItems = items.length;
 
     function slideNext() {
-        if (currentPos < totalItems - 4) {
-            currentPos++;
-        } else {
-            currentPos = 0;
-        }
+        const items = document.querySelectorAll('.member-item');
+        const totalItems = items.length;
+        let visibleItems = window.innerWidth >= 768 ? 4 : (window.innerWidth >= 640 ? 2 : 1);
+        if (currentPos < totalItems - visibleItems) { currentPos++; } else { currentPos = 0; }
         updateSlider();
     }
 
     function slidePrev() {
-        if (currentPos > 0) {
-            currentPos--;
-        } else {
-            currentPos = Math.max(0, totalItems - 4);
-        }
+        const items = document.querySelectorAll('.member-item');
+        let visibleItems = window.innerWidth >= 768 ? 4 : (window.innerWidth >= 640 ? 2 : 1);
+        if (currentPos > 0) { currentPos--; } else { currentPos = Math.max(0, items.length - visibleItems); }
         updateSlider();
     }
 
     function updateSlider() {
+        const items = document.querySelectorAll('.member-item');
         if (items.length > 0) {
-            const itemWidth = items[0].offsetWidth;
+            const itemWidth = items[0].getBoundingClientRect().width;
             slider.style.transform = `translateX(-${currentPos * itemWidth}px)`;
         }
     }
-    window.addEventListener('resize', updateSlider);
+
+    window.addEventListener('resize', () => {
+        currentPos = 0;
+        updateSlider();
+    });
 </script>
 @endsection

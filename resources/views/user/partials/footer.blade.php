@@ -6,7 +6,6 @@
     <div class="container mx-auto px-6 max-w-6xl relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
 
-            {{-- AKSES CEPAT --}}
             <div class="flex flex-col items-center md:items-start text-center md:text-left">
                 <h4 class="font-black text-[#0a362d] mb-6 uppercase tracking-[0.2em] text-[10px] flex items-center gap-2">
                     <span class="w-2 h-[2px] bg-amber-500"></span> AKSES CEPAT
@@ -19,7 +18,6 @@
                 </ul>
             </div>
 
-            {{-- LOGO & SOCIALS --}}
             <div class="flex flex-col items-center">
                 <div class="relative group mb-6">
                     <div class="absolute inset-0 bg-amber-500/10 blur-2xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700"></div>
@@ -33,11 +31,11 @@
                 <div class="flex justify-center gap-4">
                     @php
                         $socials = [
-                            ['icon' => 'instagram', 'url' => 'https://instagram.com/ukmproticpnc', 'color' => 'hover:bg-[#E1306C] hover:text-white'],
-                            ['icon' => 'discord', 'url' => 'https://discord.gg/ukmproticpnc', 'color' => 'hover:bg-[#5865F2] hover:text-white'],
-                            ['icon' => 'github', 'url' => 'https://github.com/UKM-PROTIC-PNC', 'color' => 'hover:bg-[#333] hover:text-white'],
-                            ['icon' => 'linkedin', 'url' => 'https://linkedin.com/company/ukmproticpnc', 'color' => 'hover:bg-[#0077b5] hover:text-white'],
-                            ['icon' => 'tiktok', 'url' => 'https://tiktok.com/@ukmproticpnc', 'color' => 'hover:bg-black hover:text-white'],
+                            ['icon' => 'instagram', 'url' => 'https://instagram.com/protic_pnc', 'color' => 'hover:bg-[#E1306C] hover:text-white'],
+                            ['icon' => 'discord', 'url' => 'https://discord.gg/8U59t5TjCg', 'color' => 'hover:bg-[#5865F2] hover:text-white'],
+                            ['icon' => 'github', 'url' => 'https://github.com/Protic-PNC', 'color' => 'hover:bg-[#333] hover:text-white'],
+                            ['icon' => 'linkedin', 'url' => 'https://linkedin.com/company/proticpnc', 'color' => 'hover:bg-[#0077b5] hover:text-white'],
+                            ['icon' => 'tiktok', 'url' => 'https://tiktok.com/@proticpnc', 'color' => 'hover:bg-black hover:text-white'],
                         ];
                     @endphp
 
@@ -49,7 +47,6 @@
                 </div>
             </div>
 
-            {{-- NARAHUBUNG --}}
             <div class="flex flex-col items-center md:items-end text-center md:text-right">
                 <h4 class="font-black text-[#0a362d] mb-6 uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 justify-end">
                     NARAHUBUNG <span class="w-2 h-[2px] bg-amber-500"></span>
@@ -67,7 +64,6 @@
             </div>
         </div>
 
-        {{-- COPYRIGHT --}}
         <div class="text-center mt-20 pt-8 border-t border-gray-50">
             <p class="text-[9px] text-gray-400 uppercase tracking-[0.6em] font-bold">
                 COPYRIGHT © 2026 <span class="text-[#0a362d]">UKM PROTIC PNC</span>. <span class="hidden md:inline">ALL RIGHTS RESERVED.</span>

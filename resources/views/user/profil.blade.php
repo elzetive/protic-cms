@@ -3,7 +3,6 @@
 @section('title', 'Profil - UKM PROTIC PNC')
 
 @section('content')
-    {{-- SECTION: TENTANG KAMI (TETAP) --}}
     <section class="py-24 bg-white overflow-hidden">
         <div class="container mx-auto px-6 lg:px-20 flex flex-col md:flex-row items-center gap-16">
             <div class="md:w-1/2">
@@ -22,7 +21,6 @@
         </div>
     </section>
 
-    {{-- SECTION: VISI MISI (TETAP) --}}
     <section class="py-24 bg-gray-50 relative overflow-hidden">
         <div class="container mx-auto px-6 lg:px-20">
             <h2 class="text-center text-4xl font-black text-[#0a362d] mb-16 tracking-widest uppercase">Visi & Misi</h2>
@@ -67,7 +65,6 @@
         </div>
     </section>
 
-    {{-- SECTION: OUR GOALS (TETAP) --}}
     <section class="py-24 bg-white">
         <div class="container mx-auto px-6 lg:px-20 text-center">
             <h2 class="text-4xl font-black text-[#0a362d] mb-20 tracking-widest uppercase">Our Goals</h2>
@@ -95,7 +92,6 @@
         </div>
     </section>
 
-    {{-- SECTION: OUR TEAM (DINAMIS DENGAN MAPPING GAMBAR SESUAI FOTO MENU) --}}
     <section class="py-24 bg-gradient-to-br from-[#0a362d] via-[#082a23] to-[#041411]">
         <div class="container mx-auto px-6 lg:px-20 text-center">
             <h2 class="text-4xl font-black text-white mb-4 tracking-[0.4em] uppercase">Our Team</h2>
@@ -106,11 +102,9 @@
                     @php
                         $namaDivisi = $div->divisi;
 
-                        // 1. Bersihkan nama untuk mencari file gambar (Hapus "DIVISI ", hapus "/")
                         $cleanName = str_replace(['DIVISI ', '/'], '', $namaDivisi);
                         $fileName = strtolower(trim($cleanName)) . '.jpg';
 
-                        // 2. Handle khusus jika namanya BPH
                         if($namaDivisi == 'BADAN PENGURUS HARIAN') {
                             $fileName = 'bph.jpg';
                         }
@@ -119,7 +113,6 @@
                     @endphp
 
                     <a href="{{ route('divisi.show', $slug) }}" class="group relative flex flex-col items-center">
-                        {{-- Area Kartu Foto (Desain Awal) --}}
                         <div class="relative overflow-hidden rounded-2xl shadow-2xl mb-6 aspect-[4/3] w-full bg-white/5 border border-white/10 p-2 backdrop-blur-sm transition-all duration-500 group-hover:border-amber-500/50 group-hover:-translate-y-2">
                             <img src="{{ asset('img/' . $fileName) }}"
                                  class="w-full h-full object-cover rounded-xl transition duration-700 group-hover:scale-110"
@@ -129,7 +122,6 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d] via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
                         </div>
 
-                        {{-- Info Teks --}}
                         <div class="text-center">
                             <h4 class="text-green-100 text-[11px] font-bold uppercase tracking-[0.2em] italic transition duration-300 group-hover:text-amber-400">
                                 {{ $namaDivisi }}

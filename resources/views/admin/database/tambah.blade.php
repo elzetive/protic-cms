@@ -1,7 +1,6 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-{{-- Alert Error --}}
 @if ($errors->any())
     <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
         <p class="text-[10px] font-black text-red-600 uppercase tracking-widest">Terjadi Kesalahan:</p>
@@ -33,7 +32,6 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        {{-- SISI KIRI: UPLOAD FOTO --}}
         <div class="md:col-span-1">
             <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm text-center">
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-4">Foto Profil</label>
@@ -53,7 +51,6 @@
             </div>
         </div>
 
-        {{-- SISI KANAN: DATA IDENTITAS --}}
         <div class="md:col-span-2 space-y-4">
             <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm grid grid-cols-2 gap-6 uppercase">
 
@@ -71,21 +68,23 @@
                         placeholder="NOMOR INDUK MAHASISWA" oninput="this.value = this.value.toUpperCase()">
                 </div>
 
-                {{-- PERIODE PENGURUSAN --}}
-                <div>
-                    <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2">Periode</label>
-                    <select name="angkatan" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-2xl text-xs font-bold focus:outline-none appearance-none cursor-pointer hover:border-amber-500 transition-colors uppercase">
-                        @for($y = date('Y'); $y >= 2022; $y--)
-                            @php $nextYear = $y + 1; @endphp
-                            <option value="{{ $y }}" {{ old('angkatan') == $y ? 'selected' : '' }}>
-                                {{ $y }}/{{ $nextYear }}
-                            </option>
-                        @endfor
-                    </select>
-                </div>
+<div>
+    <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2">Periode</label>
+    <select name="angkatan" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-2xl text-xs font-bold focus:outline-none appearance-none cursor-pointer hover:border-amber-500 transition-colors uppercase">
+        @php
+            $currentYear = date('Y');
+            $startYear = $currentYear;
+            $endYear = $currentYear - 4;
+        @endphp
 
-                {{-- FILTER DIVISI --}}
-                <div>
+        @for($y = $startYear; $y >= $endYear; $y--)
+            @php $nextYear = $y + 1; @endphp
+            <option value="{{ $y }}" {{ old('angkatan') == $y ? 'selected' : '' }}>
+                {{ $y }}/{{ $nextYear }}
+            </option>
+        @endfor
+    </select>
+</div>                <div>
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2">Divisi</label>
                     <select name="divisi" id="divisiSelect" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-2xl text-xs font-bold focus:outline-none appearance-none cursor-pointer hover:border-amber-500 transition-all uppercase" onchange="updateJabatan()">
                         <option value="" disabled selected>PILIH DIVISI</option>
@@ -100,7 +99,6 @@
                     </select>
                 </div>
 
-                {{-- JABATAN DINAMIS --}}
                 <div>
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2">Jabatan</label>
                     <select name="jabatan" id="jabatanSelect" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-2xl text-xs font-bold focus:outline-none appearance-none cursor-pointer hover:border-amber-500 transition-all uppercase">

@@ -11,13 +11,14 @@ return new class extends Migration
      */
 public function up()
 {
-    Schema::create('konten', function (Blueprint $table) {
+    Schema::create('arsip_models', function (Blueprint $table) {
         $table->id();
-        $table->string('judul');
-        $table->string('slug');
-        $table->enum('kategori', ['Proker', 'Prestasi']);
-        $table->text('isi');
-        $table->string('gambar')->nullable();
+        $table->string('nama_dokumen');
+        $table->string('kategori');
+        $table->date('tanggal');
+        $table->string('status'); // Publik / Internal
+        $table->text('deskripsi')->nullable();
+        $table->string('file_path'); // Lokasi file di server
         $table->timestamps();
     });
 }
@@ -26,6 +27,6 @@ public function up()
      */
     public function down(): void
     {
-        Schema::dropIfExists('konten');
+        Schema::dropIfExists('arsip_models');
     }
 };

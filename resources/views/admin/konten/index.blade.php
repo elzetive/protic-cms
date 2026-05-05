@@ -1,9 +1,10 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-<div class="space-y-6 animate-in fade-in duration-700">
+<style> [x-cloak] { display: none !important; } </style>
 
-    {{-- ALERT NOTIFIKASI --}}
+<div class="space-y-6 animate-in fade-in duration-700" x-data="{ kategori: 'menu' }">
+
     @if(session('success'))
         <div id="alert-success" class="fixed top-24 right-10 z-[100] transform transition-all duration-500">
             <div class="bg-[#0a362d] border-l-4 border-amber-500 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4">
@@ -31,99 +32,124 @@
         </script>
     @endif
 
-    {{-- HEADER HALAMAN --}}
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Manajemen Konten</h1>
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Kelola Proker & Prestasi PROTIC</p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">
+                <template x-if="kategori === 'menu'">
+                    <span>Pilih kategori untuk mengelola data website</span>
+                </template>
+                <template x-if="kategori !== 'menu'">
+                    <span>Manajemen List: <span x-text="kategori"></span> PROTIC</span>
+                </template>
+            </p>
         </div>
-        <a href="{{ route('admin.konten.tambah') }}" class="bg-[#0a362d] text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-[#082a23] transition-all shadow-lg shadow-[#0a362d]/20 active:scale-95">
-            <i class="fa-solid fa-plus text-[10px]"></i> TAMBAH KONTEN
-        </a>
+        <div class="flex gap-3">
+            <button x-show="kategori !== 'menu'" @click="kategori = 'menu'" x-cloak class="bg-white border border-gray-200 text-[#0a362d] px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 transition-all active:scale-95">
+                <i class="fa-solid fa-arrow-left mr-2"></i> KEMBALI
+            </button>
+            <a href="{{ route('admin.konten.tambah') }}" class="bg-[#0a362d] text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#082a23] transition-all shadow-lg shadow-[#0a362d]/20 active:scale-95">
+                <i class="fa-solid fa-plus mr-2"></i> TAMBAH KONTEN
+            </a>
+        </div>
     </div>
 
-    {{-- TABEL DATA --}}
-    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+    <div x-show="kategori === 'menu'" class="space-y-4">
+        <button @click="kategori = 'Proker'" class="group w-full bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-emerald-500/40 transition-all flex items-center justify-between overflow-hidden relative">
+            <div class="flex items-center gap-6 relative z-10">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-calendar-check text-xl"></i>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-sm font-black text-[#0a362d] uppercase tracking-[0.1em]">Program Kerja</h3>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Kelola agenda, dokumentasi, dan rekap kegiatan</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-8 relative z-10">
+                <div class="text-right hidden md:block">
+                    <p class="text-[9px] text-gray-400 font-black uppercase tracking-widest">Total Data</p>
+                    <p class="text-xs font-black text-emerald-600">{{ $konten->where('kategori', 'Proker')->count() }} Konten Terbit</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-all">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </div>
+            </div>
+            <div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-emerald-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </button>
+
+        <button @click="kategori = 'Prestasi'" class="group w-full bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-amber-500/40 transition-all flex items-center justify-between overflow-hidden relative">
+            <div class="flex items-center gap-6 relative z-10">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-trophy text-xl"></i>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-sm font-black text-[#0a362d] uppercase tracking-[0.1em]">Prestasi</h3>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Kelola arsip pencapaian dan kompetisi anggota</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-8 relative z-10">
+                <div class="text-right hidden md:block">
+                    <p class="text-[9px] text-gray-400 font-black uppercase tracking-widest">Total Data</p>
+                    <p class="text-xs font-black text-amber-600">{{ $konten->where('kategori', 'Prestasi')->count() }} Konten Terbit</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-amber-50 group-hover:text-amber-600 transition-all">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </div>
+            </div>
+            <div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-amber-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </button>
+    </div>
+
+    <div x-show="kategori !== 'menu'" x-cloak x-transition class="bg-white rounded-[1.5rem] border border-gray-100 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-50/80 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] border-b border-gray-100">
-                        <th class="px-8 py-5 text-center w-16">No</th>
-                        <th class="px-6 py-5">Thumbnail</th>
-                        <th class="px-6 py-5">Judul Konten</th>
-                        <th class="px-6 py-5">Kategori</th>
-                        <th class="px-6 py-5 text-center">Tanggal</th>
-                        <th class="px-8 py-5 text-center">Aksi</th>
+                        <th class="px-6 py-4 text-center w-16">No</th>
+                        <th class="px-6 py-4">Thumbnail</th>
+                        <th class="px-6 py-4">Judul Konten</th>
+                        <th class="px-6 py-4 text-center">Tanggal Terbit</th>
+                        <th class="px-6 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="text-[11px] font-bold text-[#0a362d] divide-y divide-gray-50">
-                    @forelse ($konten as $index => $item)
-                    <tr class="hover:bg-gray-50/30 transition-colors group">
-                        <td class="px-8 py-3.5 text-center text-gray-400 font-medium">{{ $index + 1 }}</td>
-                        <td class="px-6 py-3.5">
-                            <div class="w-16 h-10 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 shadow-sm transition-transform group-hover:scale-105">
-                                @if($item->gambar)
-                                    <img src="{{ asset('storage/' . $item->gambar) }}" class="w-full h-full object-cover" alt="Thumbnail">
-                                @else
-                                    <img src="https://ui-avatars.com/api/?name=No+Image&background=0a362d&color=fff" class="w-full h-full object-cover" alt="No Thumbnail">
-                                @endif
-                            </div>
-                        </td>
-                        <td class="px-6 py-3.5">
-                            <span class="block max-w-[300px] truncate uppercase tracking-tight">{{ $item->judul }}</span>
-                        </td>
-                        <td class="px-6 py-3.5">
-                            @if($item->kategori == 'Proker')
-                                <span class="text-emerald-600 uppercase text-[9px] tracking-widest bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-lg font-black">PROKER</span>
-                            @else
-                                <span class="text-amber-600 uppercase text-[9px] tracking-widest bg-amber-50 border border-amber-100 px-2.5 py-1 rounded-lg font-black">PRESTASI</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-3.5 text-center text-gray-400 font-medium">
-                            {{ $item->created_at->format('d/m/Y') }}
-                        </td>
-                        <td class="px-8 py-3.5 text-center">
-                            <div class="flex items-center justify-center gap-4">
-                                {{-- Link Edit --}}
-                                <a href="{{ route('admin.konten.edit', $item->id) }}" class="text-gray-300 hover:text-blue-600 transition-colors text-[10px] uppercase tracking-tighter font-bold">Edit</a>
-
-                                {{-- FORM HAPUS --}}
-                                <form action="{{ route('admin.konten.destroy', $item->id) }}" method="POST" onsubmit="return confirm('APAKAH ANDA YAKIN INGIN MENGHAPUS KONTEN INI?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-300 hover:text-red-600 transition-colors text-[10px] uppercase tracking-tighter font-bold">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="px-8 py-10 text-center text-gray-400 italic uppercase tracking-widest text-[10px]">
-                            Belum ada data konten yang ditambahkan.
-                        </td>
-                    </tr>
-                    @endforelse
+                    @php $noProker = 1; $noPrestasi = 1; @endphp
+                    @foreach ($konten as $item)
+                        <tr x-show="kategori === '{{ $item->kategori }}'" class="hover:bg-gray-50/30 transition-colors group">
+                            <td class="px-6 py-4 text-center text-gray-400 font-medium">
+                                {{ $item->kategori == 'Proker' ? $noProker++ : $noPrestasi++ }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="w-12 h-8 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                                    @if($item->gambar)
+                                        <img src="{{ asset('storage/' . $item->gambar) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name=No+Image&background=0a362d&color=fff" class="w-full h-full object-cover">
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="block max-w-[300px] truncate uppercase tracking-tight">{{ $item->judul }}</span>
+                                <span class="block text-[9px] text-gray-400 font-medium italic mt-0.5 uppercase">{{ $item->sub_judul ?? '-' }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-center text-gray-400 font-medium">
+                                {{ $item->created_at->format('d/m/Y') }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-4">
+                                    <a href="{{ route('admin.konten.edit', $item->id) }}" class="text-gray-300 hover:text-blue-600 transition-colors text-[10px] uppercase font-black">Edit</a>
+                                    <form action="{{ route('admin.konten.destroy', $item->id) }}" method="POST" onsubmit="return confirm('YAKIN HAPUS?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-300 hover:text-red-600 transition-colors text-[10px] uppercase font-black">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
-        </div>
-
-        {{-- FOOTER / PAGINATION --}}
-        <div class="p-6 bg-white border-t border-gray-50 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p class="text-[10px] text-gray-300 font-black uppercase tracking-[0.2em]">
-                Total Konten: {{ $konten->count() }} Item
-            </p>
-
-            <div class="flex items-center gap-3">
-                <button class="px-4 py-2 text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-[#0a362d] transition-all disabled:opacity-50" disabled>
-                    <i class="fa-solid fa-chevron-left mr-1"></i> Kembali
-                </button>
-                <div class="flex items-center gap-2">
-                    <button class="w-7 h-7 flex items-center justify-center rounded-xl bg-[#0a362d] text-white text-[10px] font-black shadow-lg shadow-[#0a362d]/20">1</button>
-                </div>
-                <button class="px-4 py-2 text-[10px] font-black text-gray-300 uppercase tracking-widest disabled:opacity-50" disabled>
-                    Lanjut <i class="fa-solid fa-chevron-right ml-1"></i>
-                </button>
-            </div>
         </div>
     </div>
 </div>

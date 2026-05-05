@@ -4,30 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KontenModel;
+use App\Models\PengurusModel;
 
 class BerandaController extends Controller
 {
-    public function index()
+public function index()
+{
+    $periodeTerbaru = PengurusModel::max('angkatan');
+
+    $proker = KontenModel::where('kategori', 'Proker')->latest()->take(4)->get();
+    $prestasi = KontenModel::where('kategori', 'Prestasi')->latest()->take(4)->get();
+
+    return view('user.beranda', compact('proker', 'prestasi', 'periodeTerbaru'));
+}
+    public function show($slug)
     {
+        $konten = KontenModel::where('slug', $slug)->firstOrFail();
 
-
-        $prestasi = KontenModel::where('kategori', 'Prestasi')
+        $latest = KontenModel::where('id', '!=', $konten->id)
                     ->latest()
-                    ->take(4)
+                    ->take(3)
                     ->get();
 
-        return view('user.beranda', compact('berita', 'prestasi'));
+        return view('user.konten_detail', compact('konten', 'latest'));
     }
-
-    public function show($slug)
-{
-    $konten = \App\Models\KontenModel::where('slug', $slug)->firstOrFail();
-
-    $latest = \App\Models\KontenModel::where('id', '!=', $konten->id)
-                ->latest()
-                ->take(3)
-                ->get();
-
-    return view('user.konten_detail', compact('konten', 'latest'));
-}
 }

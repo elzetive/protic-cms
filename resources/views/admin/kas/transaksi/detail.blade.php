@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="space-y-4 animate-in fade-in duration-500">
-    {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.kas.index') }}" class="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center text-[#0a362d] hover:bg-gray-50 transition-all shadow-sm">
@@ -34,7 +33,6 @@
                     </tr>
                 </thead>
                 <tbody class="text-[11px] font-bold text-[#0a362d] divide-y divide-gray-50">
-                    {{-- LIMIT 6 BARIS --}}
                     @for ($i = 0; $i < 6; $i++)
                     <tr class="hover:bg-gray-50/30 transition-colors group">
                         <td class="px-6 py-3.5 text-gray-400 font-medium italic">14 April 2026</td>

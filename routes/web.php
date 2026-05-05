@@ -6,19 +6,15 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\ProkerController;
 use App\Http\Controllers\PrestasiController;
-
-// Import Admin Controllers
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\KontenController;
 use App\Http\Controllers\Admin\PengurusController;
-use App\Http\Controllers\Admin\DashboardController; // Tambahkan ini jika dashboard mau dinamis
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KasController;
+use App\Http\Controllers\Admin\AbsensiController;
+use App\Http\Controllers\Admin\ArsipController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes - UKM PROTIC PNC
-|--------------------------------------------------------------------------
-*/
 
-// --- ROUTE USER (TAMPILAN PUBLIK) ---
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 Route::get('/divisi/{slug}', [DivisiController::class, 'show'])->name('divisi.show');
@@ -26,83 +22,61 @@ Route::get('/proker', [ProkerController::class, 'index'])->name('proker');
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
 Route::get('/konten/{slug}', [BerandaController::class, 'show'])->name('konten.detail');
 
+Route::middleware('guest')->group(function () {
+    Route::get('/login', function () { return view('auth.login'); })->name('login');
+    Route::get('/admin/login', function () { return view('auth.login'); })->name('admin.login');
+    Route::post('/login', [AuthController::class, 'loginAuthenticate'])->name('login.submit');
 
-// --- ROUTE AUTH (LOGIN & REGISTER) ---
-Route::get('/login', function () { return view('auth.login'); })->name('login');
-Route::get('/register', function () { return view('auth.register'); })->name('register');
+    Route::get('/register', function () { return view('auth.register'); })->name('register');
+    Route::post('/register', [AuthController::class, 'registerStore'])->name('register.submit');
+});
 
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// --- ROUTE ADMIN (MANAGEMENT SYSTEM) ---
-Route::prefix('admin')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-    // --- Login & Logout Admin ---
-    Route::get('/login', function () { return view('auth.login'); })->name('admin.login');
-    Route::post('/logout', function () {
-        return redirect()->route('admin.login');
-    })->name('logout');
-
-    // --- Dashboard ---
-    // Gunakan controller jika ingin menampilkan statistik dinamis
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    // --- Manajemen Konten (PROKER & PRESTASI) ---
-    Route::get('/konten', [KontenController::class, 'index'])->name('admin.konten.index');
-    Route::get('/konten/tambah', [KontenController::class, 'create'])->name('admin.konten.tambah');
-    Route::post('/konten/simpan', [KontenController::class, 'store'])->name('admin.konten.store');
-    Route::get('/konten/edit/{id}', [KontenController::class, 'edit'])->name('admin.konten.edit'); // ADDED
-    Route::put('/konten/update/{id}', [KontenController::class, 'update'])->name('admin.konten.update'); // ADDED
-    Route::delete('/konten/hapus/{id}', [KontenController::class, 'destroy'])->name('admin.konten.destroy');
+    Route::controller(KontenController::class)->group(function () {
+        Route::get('/konten', 'index')->name('admin.konten.index');
+        Route::get('/konten/tambah', 'create')->name('admin.konten.tambah');
+        Route::post('/konten/simpan', 'store')->name('admin.konten.store');
+        Route::get('/konten/edit/{id}', 'edit')->name('admin.konten.edit');
+        Route::put('/konten/update/{id}', 'update')->name('admin.konten.update');
+        Route::delete('/konten/hapus/{id}', 'destroy')->name('admin.konten.destroy');
+    });
 
-    // --- Manajemen Database Pengurus ---
-    Route::get('/database', [PengurusController::class, 'index'])->name('admin.database.index');
-    Route::get('/database/tambah', [PengurusController::class, 'create'])->name('admin.database.tambah');
-    Route::post('/database/simpan', [PengurusController::class, 'store'])->name('admin.database.store');
-    Route::get('/database/edit/{id}', [PengurusController::class, 'edit'])->name('admin.database.edit'); // ADDED
-    Route::put('/database/update/{id}', [PengurusController::class, 'update'])->name('admin.database.update'); // ADDED
-    Route::delete('/database/hapus/{id}', [PengurusController::class, 'destroy'])->name('admin.database.destroy');
+    Route::controller(PengurusController::class)->group(function () {
+        Route::get('/database', 'index')->name('admin.database.index');
+        Route::get('/database/tambah', 'create')->name('admin.database.tambah');
+        Route::post('/database/simpan', 'store')->name('admin.database.store');
+        Route::get('/database/edit/{id}', 'edit')->name('admin.database.edit');
+        Route::put('/database/update/{id}', 'update')->name('admin.database.update');
+        Route::delete('/database/hapus/{id}', 'destroy')->name('admin.database.destroy');
 
-    // --- Manajemen Kas (Transaksi) ---
-    Route::get('/kas/transaksi', function () {
-        return view('admin.kas.transaksi.index');
-    })->name('admin.kas.index');
-    Route::get('/kas/transaksi/detail', function () {
-        return view('admin.kas.transaksi.detail');
-    })->name('admin.kas.detail');
-    Route::get('/kas/transaksi/tambah', function () {
-        return view('admin.kas.transaksi.tambah');
-    })->name('admin.kas.tambah');
+        Route::post('/database/clone/{id}', 'clone')->name('admin.database.clone');
+        Route::post('/database/bulk-clone', 'bulkClone')->name('admin.database.bulkClone');
+    Route::post('/database/bulk-clone', 'bulkClone')->name('admin.database.bulkClone');
+    Route::post('/database/bulk-delete', 'bulkDestroy')->name('admin.database.bulkDestroy');
 
-    // --- Manajemen Kas (Iuran) ---
-    Route::get('/kas/iuran', function () {
-        return view('admin.kas.iuran.index');
-    })->name('admin.iuran.index');
-    Route::get('/kas/iuran/detail', function () {
-        return view('admin.kas.iuran.detail');
-    })->name('admin.kas.detail_iuran');
-    Route::get('/kas/iuran/tambah', function () {
-        return view('admin.kas.iuran.tambah');
-    })->name('admin.iuran.tambah');
+    });
 
-    // --- Manajemen Arsip ---
-    Route::get('/arsip', function () {
-        return view('admin.arsip.index');
-    })->name('admin.arsip.index');
-    Route::get('/arsip/tambah', function () {
-        return view('admin.arsip.tambah');
-    })->name('admin.arsip.tambah');
+    Route::prefix('kas')->group(function() {
+        Route::get('/transaksi', [KasController::class, 'indexTransaksi'])->name('admin.kas.index');
+        Route::post('/simpan', [KasController::class, 'store'])->name('admin.kas.store');
+        Route::delete('/hapus/{id}', [KasController::class, 'destroy'])->name('admin.kas.destroy');
+        Route::get('/iuran', [KasController::class, 'indexIuran'])->name('admin.iuran.index');
+    });
 
-    // --- Manajemen Absensi ---
-    Route::get('/absensi', function () {
-        return view('admin.absensi.index');
-    })->name('admin.absensi.index');
-    Route::get('/absensi/tambah', function () {
-        return view('admin.absensi.tambah');
-    })->name('admin.absensi.tambah');
-    Route::get('/absensi/detail', function () {
-        return view('admin.absensi.detail');
-    })->name('admin.absensi.detail');
-    Route::get('/absensi/bagikan', function () {
-        return view('admin.absensi.bagikan');
-    })->name('admin.absensi.qrcode');
+    Route::prefix('absensi')->group(function() {
+        Route::get('/', [AbsensiController::class, 'index'])->name('admin.absensi.index');
+        Route::post('/simpan', [AbsensiController::class, 'store'])->name('admin.absensi.store');
+    });
 
+    Route::prefix('arsip')->group(function() {
+        Route::get('/', [ArsipController::class, 'index'])->name('admin.arsip.index');
+        Route::get('/tambah', [ArsipController::class, 'tambah'])->name('admin.arsip.tambah');
+        Route::post('/simpan', [ArsipController::class, 'store'])->name('admin.arsip.store');
+        Route::delete('/hapus/{id}', [ArsipController::class, 'destroy'])->name('admin.arsip.destroy');
+    });
 });

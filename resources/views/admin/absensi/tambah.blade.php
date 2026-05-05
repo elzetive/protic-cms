@@ -1,7 +1,6 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-{{-- Jarak space-y-4 tetap dijaga agar presisi satu layar --}}
 <form action="#" method="POST" class="space-y-4 animate-in fade-in duration-500">
     @csrf
     <div class="flex items-center justify-between">
@@ -16,7 +15,6 @@
         </button>
     </div>
 
-    {{-- Box Input (Grid 2 Kolom agar Full Samping tapi No Scroll kebawah) --}}
     <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
         <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Detail Agenda</p>
 

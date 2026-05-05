@@ -1,9 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-{{-- space-y-4 biar header & tabel nempel pas --}}
 <div class="space-y-4 animate-in fade-in duration-500">
-    {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.absensi.index') }}" class="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center text-[#0a362d] hover:bg-gray-50 transition-all shadow-sm">
@@ -33,7 +31,6 @@
                     </tr>
                 </thead>
                 <tbody class="text-[11px] font-bold text-[#0a362d] divide-y divide-gray-50">
-                    {{-- 9 BARIS: Muat banyak, tetap no-scroll karena teks ramping --}}
                     @for ($i = 0; $i < 9; $i++)
                     <tr class="hover:bg-gray-50/30 transition-colors group">
                         <td class="px-8 py-3 uppercase tracking-tighter">Dimas Riyan</td>
@@ -54,7 +51,6 @@
             </table>
         </div>
 
-        {{-- Footer Tipis --}}
         <div class="px-8 py-3 bg-gray-50/30 border-t border-gray-50 flex justify-between items-center">
             <p class="text-[9px] text-gray-300 font-black uppercase tracking-[0.2em]">Data Absensi Terkunci</p>
             <div class="flex items-center gap-1">

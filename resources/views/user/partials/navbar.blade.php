@@ -1,13 +1,12 @@
 <nav class="bg-[#0a362d] text-white p-4 sticky top-0 z-50 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center px-6"> {{-- Diubah ke justify-between agar sejajar kiri-kanan --}}
+    <div class="container mx-auto flex justify-between items-center px-6">
 
-        {{-- Group Kiri: Logo + Menu --}}
         <div class="flex items-center">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-10">
                 <div class="flex flex-col mr-16">
                     <h1 class="font-bold text-sm leading-tight uppercase text-white">UKM PROTIC PNC</h1>
-                    <p class="text-[10px] italic text-amber-500 font-medium tracking-wide">Improve Skill to Innovate</p>
+                    <p class="text-[10px] italic text-amber-500 font-medium uppercase tracking-wide">Improve Skill to Innovate</p>
                 </div>
             </div>
 
@@ -65,12 +64,16 @@
                 </li>
             </ul>
         </div>
-
         <div class="flex items-center">
-            <a href="{{ route('admin.login') }}" class="bg-[#f59e0b] text-[#0a362d] px-5 py-2 rounded-xl text-xs font-bold hover:bg-white transition-all shadow-lg">
-                LOGIN
-            </a>
+            @auth
+                <a href="{{ route('admin.dashboard') }}" target="_blank" class="bg-white text-[#0a362d] px-5 py-2 rounded-xl text-xs font-bold hover:bg-amber-500 hover:text-white transition-all shadow-lg border-2 border-amber-500">
+                    DASHBOARD
+                </a>
+            @else
+                <a href="{{ route('admin.login') }}" class="bg-[#f59e0b] text-[#0a362d] px-5 py-2 rounded-xl text-xs font-bold hover:bg-white transition-all shadow-lg">
+                    LOGIN
+                </a>
+            @endauth
         </div>
-
     </div>
 </nav>

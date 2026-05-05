@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KontenModel extends Model
+class AbsensiModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'konten';
-
     protected $fillable = [
-        'judul',
-        'sub_judul',
-        'slug',
-        'kategori',
-        'isi',
-        'gambar',
+        'nama_kegiatan',
+        'tanggal',
+        'waktu',
+        'lokasi',
+        'token_absensi'
     ];
 }

@@ -30,15 +30,15 @@
             <p class="text-xl font-medium tracking-widest uppercase opacity-80 text-amber-500">UKM PROTIC PNC</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto items-stretch">
-            @foreach($data['achievements'] as $item)
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[90rem] mx-auto items-stretch">
+            @forelse($data['achievements'] as $item)
             <div class="group flex flex-col h-full">
                 <div class="relative flex flex-col h-full bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-4 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-4 group-hover:border-amber-500/50 group-hover:bg-white/10">
 
                     <div class="relative overflow-hidden rounded-2xl mb-6 shadow-inner">
-                        <img src="{{ asset('img/prestasi/' . $item['img']) }}"
+                        <img src="{{ asset('storage/' . $item->gambar) }}"
                              class="w-full aspect-video object-cover transition-transform duration-[1.5s] group-hover:scale-110"
-                             alt="{{ $item['sub'] }}">
+                             alt="{{ $item->judul }}">
 
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
@@ -46,13 +46,13 @@
                     <div class="text-center flex-grow flex flex-col items-center">
                         <div class="w-8 h-[2px] bg-amber-500 mb-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
 
-                        <h5 class="text-white font-bold text-sm uppercase tracking-wider leading-snug px-2 group-hover:text-amber-400 transition-colors duration-300">
-                            {{ $item['sub'] }}
+                        <h5 class="text-white font-bold text-sm tracking-wider leading-snug px-2 group-hover:text-amber-400 transition-colors duration-300 uppercase">
+                            {{ $item->judul }}
                         </h5>
 
                         <div class="mt-auto pt-6">
-                            <span class="inline-block px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 group-hover:bg-amber-500 group-hover:text-[#0a362d]">
-                                {{ $item['detail'] }}
+                            <span class="inline-block px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-[10px] font-bold tracking-[0.2em] transition-all duration-500 group-hover:bg-amber-500 group-hover:text-[#0a362d] uppercase">
+                                {{ $item->sub_judul }}
                             </span>
                         </div>
                     </div>
@@ -60,7 +60,11 @@
                     <div class="absolute -inset-px bg-gradient-to-b from-amber-500/10 to-transparent rounded-[1.5rem] opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-full text-center py-20">
+                <p class="text-white/50 italic text-lg opacity-80 uppercase">Belum ada prestasi yang dipublikasikan.</p>
+            </div>
+            @endforelse
         </div>
     </div>
 </section>

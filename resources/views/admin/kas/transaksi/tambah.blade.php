@@ -3,7 +3,6 @@
 @section('content')
 <form action="#" method="POST" class="space-y-4 animate-in fade-in duration-500">
     @csrf
-    {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.kas.index') }}" class="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center text-[#0a362d] hover:bg-gray-50 transition-all shadow-sm">
@@ -16,12 +15,10 @@
         </button>
     </div>
 
-    {{-- Form Box (Grid 2 Kolom) --}}
     <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
         <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Detail Keuangan</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-            {{-- Baris 1 --}}
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2 ml-1">Tanggal Transaksi</label>
                 <input type="date" name="tanggal" class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all">
@@ -31,7 +28,6 @@
                 <input type="text" name="keterangan" placeholder="Contoh: Pembelian domain" class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all placeholder:text-gray-300">
             </div>
 
-            {{-- Baris 2 --}}
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2 ml-1">Jenis Kas</label>
                 <select name="tipe" class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-[11px] font-bold focus:outline-none focus:border-amber-500 transition-all cursor-pointer">

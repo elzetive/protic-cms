@@ -11,13 +11,13 @@ return new class extends Migration
      */
 public function up()
 {
-    Schema::create('konten', function (Blueprint $table) {
+    Schema::create('absensi_models', function (Blueprint $table) {
         $table->id();
-        $table->string('judul');
-        $table->string('slug');
-        $table->enum('kategori', ['Proker', 'Prestasi']);
-        $table->text('isi');
-        $table->string('gambar')->nullable();
+        $table->string('nama_kegiatan');
+        $table->date('tanggal');
+        $table->time('waktu');
+        $table->string('lokasi');
+        $table->string('token_absensi')->unique(); // Untuk link QR Code nanti
         $table->timestamps();
     });
 }
@@ -26,6 +26,6 @@ public function up()
      */
     public function down(): void
     {
-        Schema::dropIfExists('konten');
+        Schema::dropIfExists('absensi_models');
     }
 };

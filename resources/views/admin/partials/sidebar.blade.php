@@ -1,17 +1,15 @@
 <aside id="adminSidebar" class="w-64 bg-white flex flex-col h-screen transition-all duration-300 ease-in-out shrink-0 z-50 border-r border-gray-100 shadow-sm sticky top-0">
 
-    {{-- 1. HEADER LOGO --}}
     <div class="h-24 flex items-center sidebar-logo-container border-b border-gray-50 transition-all duration-300">
         <div class="flex items-center gap-4 sidebar-justify-center w-full px-6">
             <img src="{{ asset('img/logo.png') }}" class="h-12 w-auto object-contain transition-transform duration-300 hover:scale-110 shrink-0">
             <div class="flex flex-col sidebar-text whitespace-nowrap">
-                <span class="text-[#0a362d] font-black text-[14px] leading-tight uppercase tracking-[0.15em] text-left">UKM PROTIC</span>
+                <span class="text-[#0a362d] font-black text-[14px] leading-tight uppercase tracking-[0.15em] text-left">UKM PROTIC PNC</span>
                 <span class="text-[9px] italic text-[#f59e0b] font-extrabold tracking-widest text-left mt-0.5">IMPROVE SKILL TO INNOVATE</span>
             </div>
         </div>
     </div>
 
-    {{-- 2. MENU NAVIGASI (Scrollable) --}}
     <nav class="flex-grow py-6 overflow-y-auto no-scrollbar space-y-2 px-4">
         @php
             function getMenuClass($isActive) {
@@ -21,7 +19,6 @@
             }
         @endphp
 
-        {{-- Dashboard --}}
         <div class="relative group">
             @if(request()->routeIs('admin.dashboard'))
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-[#f59e0b] rounded-r-full z-10"></div>
@@ -32,7 +29,6 @@
             </a>
         </div>
 
-        {{-- Konten --}}
         <div class="relative group">
             @if(request()->routeIs('admin.konten.*'))
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-[#f59e0b] rounded-r-full z-10"></div>
@@ -43,7 +39,6 @@
             </a>
         </div>
 
-        {{-- Database --}}
         <div class="relative group">
             @if(request()->routeIs('admin.database.*'))
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-[#f59e0b] rounded-r-full z-10"></div>
@@ -54,7 +49,6 @@
             </a>
         </div>
 
-        {{-- Kas (Dropdown) --}}
         <div class="relative group">
             @php $isKasActive = request()->routeIs('admin.kas.*') || request()->routeIs('admin.iuran.*'); @endphp
             @if($isKasActive)
@@ -77,7 +71,6 @@
             </div>
         </div>
 
-        {{-- Absensi --}}
         <div class="relative group">
             @if(request()->routeIs('admin.absensi.*'))
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-[#f59e0b] rounded-r-full z-10"></div>
@@ -88,7 +81,6 @@
             </a>
         </div>
 
-        {{-- Arsip --}}
         <div class="relative group">
             @if(request()->routeIs('admin.arsip.*'))
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-[#f59e0b] rounded-r-full z-10"></div>
@@ -100,14 +92,17 @@
         </div>
     </nav>
 
-    {{-- 3. FOOTER SIDEBAR (STAY AT BOTTOM) --}}
-    <div class="p-4 border-t border-gray-50 sidebar-text">
-        <a href="{{ route('beranda') }}" target="_blank" class="flex items-center gap-3 px-5 py-4 text-[#0a362d]/50 hover:text-[#f59e0b] transition-all group bg-gray-50/50 rounded-2xl">
-            <i class="fa-solid fa-earth-asia group-hover:rotate-180 transition-transform duration-700"></i>
-            <span class="text-[10px] font-black uppercase tracking-[0.2em]">Lihat Website</span>
-        </a>
-    </div>
+<div class="p-4 border-t border-gray-50">
+    <a href="{{ route('beranda') }}" target="_blank"
+       class="flex items-center sidebar-link-justify gap-3 px-5 py-4 text-[#0a362d]/50 hover:text-[#f59e0b] transition-all group bg-gray-50/50 rounded-2xl"
+       title="Lihat Website">
+        <i class="fa-solid fa-earth-asia group-hover:rotate-180 transition-transform duration-700 text-center w-5 shrink-0"></i>
 
+        <span class="sidebar-text text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap">
+            Lihat Website
+        </span>
+    </a>
+</div>
 </aside>
 
 <script>

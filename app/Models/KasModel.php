@@ -5,18 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KontenModel extends Model
+class KasModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'konten';
+    protected $table = 'kas';
 
     protected $fillable = [
-        'judul',
-        'sub_judul',
-        'slug',
-        'kategori',
-        'isi',
-        'gambar',
+        'tipe', 'kategori', 'nominal', 'keterangan', 'tanggal', 'bukti'
     ];
 }

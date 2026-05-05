@@ -1,7 +1,6 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-{{-- space-y-4 tetap dijaga agar tidak memakan ruang vertikal berlebih --}}
 <form action="#" method="POST" class="space-y-4 animate-in fade-in duration-500">
     @csrf
     <div class="flex items-center justify-between">
@@ -16,12 +15,10 @@
         </button>
     </div>
 
-    {{-- Box Input (Full Width Grid) --}}
     <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
         <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Informasi Pembayaran</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 pb-4">
-            {{-- Baris 1 --}}
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2.5 ml-1">Nama Pengurus</label>
                 <input type="text" name="nama_pengurus" placeholder="Nama lengkap pengurus..." class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all placeholder:text-gray-300">
@@ -31,7 +28,6 @@
                 <input type="text" name="bulan" placeholder="Contoh: April 2026" class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all placeholder:text-gray-300">
             </div>
 
-            {{-- Baris 2 --}}
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2.5 ml-1">Tanggal Bayar</label>
                 <input type="date" name="tgl_bayar" class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all">
