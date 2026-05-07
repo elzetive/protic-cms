@@ -112,7 +112,7 @@
                         <span class="text-gray-400 text-sm font-bold">@</span>
                         <input type="text" name="instagram" value="{{ old('instagram') }}"
                             class="w-full bg-transparent border-none outline-none text-xs font-bold uppercase"
-                            placeholder="USERNAME IG" oninput="this.value = this.value.toUpperCase()">
+                            placeholder="USERNAME" oninput="this.value = this.value.toUpperCase()">
                     </div>
                 </div>
 

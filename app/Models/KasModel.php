@@ -12,6 +12,12 @@ class KasModel extends Model
     protected $table = 'kas';
 
     protected $fillable = [
-        'tipe', 'kategori', 'nominal', 'keterangan', 'tanggal', 'bukti'
+        'tipe',
+        'kategori',
+        'nominal',
+        'keterangan',
+        'tanggal',
+        'bukti',
+        'periode'
     ];
 }

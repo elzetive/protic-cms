@@ -9,10 +9,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up()
+public function up(): void
 {
-    Schema::table('pengurus', function (Blueprint $table) {
-        $table->softDeletes(); // Ini akan membuat kolom deleted_at
+    Schema::table('kas', function (Blueprint $table) {
+        $table->string('periode')->nullable()->after('bukti');
     });
 }
     /**
@@ -20,7 +20,7 @@ public function up()
      */
     public function down(): void
     {
-        Schema::table('pengurus', function (Blueprint $table) {
+        Schema::table('kas', function (Blueprint $table) {
             //
         });
     }

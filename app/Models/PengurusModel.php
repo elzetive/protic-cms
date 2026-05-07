@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PengurusModel extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'pengurus';
+    protected $fillable = ['mahasiswa_id', 'jabatan', 'divisi', 'angkatan'];
 
-    protected $fillable = [
-        'nama', 'nim', 'jabatan', 'divisi', 'angkatan', 'foto', 'instagram'
-    ];
+    public function mahasiswa()
+    {
+        return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id');
+    }
 }

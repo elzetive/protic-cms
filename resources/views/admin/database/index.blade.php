@@ -132,6 +132,7 @@
                                     'DIVISI DATA' => 7, 'DIVISI DEVOPS' => 8
                                 ];
 
+                                // PERBAIKAN: Mengurutkan berdasarkan data mahasiswa
                                 $sortedPengurus = $pengurus->where('angkatan', $thn)->sort(function($a, $b) use ($jobPriority, $divPriority) {
                                     $pA = $jobPriority[strtoupper($a->jabatan)] ?? 99;
                                     $pB = $jobPriority[strtoupper($b->jabatan)] ?? 99;
@@ -141,11 +142,11 @@
                                     $dB = $divPriority[strtoupper($b->divisi)] ?? 99;
                                     if ($dA !== $dB) return $dA <=> $dB;
 
-                                    $nimA = (int)substr($a->nim, 0, 2);
-                                    $nimB = (int)substr($b->nim, 0, 2);
+                                    $nimA = (int)substr($a->mahasiswa->nim, 0, 2);
+                                    $nimB = (int)substr($b->mahasiswa->nim, 0, 2);
                                     if ($nimA !== $nimB) return $nimA <=> $nimB;
 
-                                    return strcasecmp($a->nama, $b->nama);
+                                    return strcasecmp($a->mahasiswa->nama, $b->mahasiswa->nama);
                                 });
                             @endphp
                             @foreach ($sortedPengurus as $item)
@@ -158,16 +159,16 @@
                                     <td class="px-8 py-4 text-center text-gray-400">{{ $no++ }}</td>
                                     <td class="px-6 py-4">
                                         <div class="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-                                            @if($item->foto)
-                                                <img src="{{ asset('storage/' . $item->foto) }}" class="w-full h-full object-cover">
+                                            @if($item->mahasiswa->foto)
+                                                <img src="{{ asset('storage/' . $item->mahasiswa->foto) }}" class="w-full h-full object-cover">
                                             @else
-                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($item->nama) }}&background=0a362d&color=fff" class="w-full h-full object-cover">
+                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($item->mahasiswa->nama) }}&background=0a362d&color=fff" class="w-full h-full object-cover">
                                             @endif
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 flex flex-col uppercase">
-                                        <span class="tracking-tight">{{ $item->nama }}</span>
-                                        <span class="text-gray-400 text-[9px] mt-0.5 tracking-widest">NIM: {{ $item->nim }}</span>
+                                        <span class="tracking-tight">{{ $item->mahasiswa->nama }}</span>
+                                        <span class="text-gray-400 text-[9px] mt-0.5 tracking-widest">NIM: {{ $item->mahasiswa->nim }}</span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col uppercase">
@@ -192,8 +193,9 @@
             </div>
         </div>
 
+        <!-- Modal Clone -->
         <div x-show="showCloneModal" x-cloak class="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div @click.away="showCloneModal = false" class="bg-white rounded-3xl p-8 w-full max-md shadow-2xl animate-in zoom-in duration-300">
+            <div @click.away="showCloneModal = false" class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in zoom-in duration-300">
                 <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
                         <i class="fa-solid fa-copy text-xl"></i>
@@ -205,12 +207,12 @@
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Tahun Angkatan Awal</label>
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Tahun Angkatan Baru</label>
                         <input type="number" name="target_tahun" placeholder="Contoh: 2026"
                                onkeydown="if(event.keyCode === 13) { event.preventDefault(); return false; }"
                                class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-[#0a362d] focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                         <p class="text-[9px] text-gray-400 mt-2 italic font-medium leading-relaxed">
-                            * Data pengurus akan diduplikasi ke periode <span class="text-blue-600 font-bold">Tahun/Tahun+1</span>. Jabatan akan otomatis di-reset menjadi 'ANGGOTA'.
+                            * Profil pengurus tetap sinkron. Jabatan di periode baru akan di-reset menjadi 'ANGGOTA'.
                         </p>
                     </div>
                     <div class="flex gap-3 pt-4">
@@ -243,6 +245,7 @@
             selectAll.addEventListener('change', function() {
                 const checkboxes = document.querySelectorAll('.child-checkbox');
                 checkboxes.forEach(cb => {
+                    // Hanya centang yang tampil sesuai periode aktif
                     if (cb.closest('tr').style.display !== 'none') {
                         cb.checked = this.checked;
                     }

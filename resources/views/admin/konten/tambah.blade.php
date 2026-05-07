@@ -33,14 +33,11 @@
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Judul Konten</label>
                 <input type="text" name="judul" value="{{ old('judul') }}" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase placeholder:uppercase" placeholder="Masukkan judul konten...">
             </div>
-            <div>
-    <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Sub Judul</label>
-    <input type="text" name="sub_judul" value="{{ old('sub_judul', $konten->sub_judul ?? '') }}" class="w-full bg-gray-50 border border-gray-100 py-2.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase" placeholder="CONTOH: LOMBA WEB DESIGN NASIONAL">
-</div>
+
             <div>
                 <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Kategori</label>
                 <div class="relative">
-                    <select name="kategori" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-4 rounded-xl text-[11px] font-bold focus:outline-none appearance-none cursor-pointer uppercase">
+                    <select name="kategori" id="kategoriSelect" onchange="toggleSubJudul()" required class="w-full bg-gray-50 border border-gray-100 py-2.5 px-4 rounded-xl text-[11px] font-bold focus:outline-none appearance-none cursor-pointer uppercase">
                         <option value="" disabled selected class="uppercase">Pilih Kategori</option>
                         <option value="Proker" {{ old('kategori') == 'Proker' ? 'selected' : '' }} class="uppercase">PROKER</option>
                         <option value="Prestasi" {{ old('kategori') == 'Prestasi' ? 'selected' : '' }} class="uppercase">PRESTASI</option>
@@ -49,6 +46,11 @@
                         <i class="fa-solid fa-chevron-down text-[10px]"></i>
                     </div>
                 </div>
+            </div>
+
+            <div id="wrapperSubJudul" class="hidden animate-in fade-in zoom-in duration-300">
+                <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Sub Judul </label>
+                <input type="text" name="sub_judul" id="sub_judul" value="{{ old('sub_judul') }}" class="w-full bg-gray-50 border border-gray-100 py-2.5 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase" placeholder="KATEGORI LOMBA ">
             </div>
         </div>
 
@@ -74,18 +76,21 @@
         <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
             <div class="grid grid-cols-1 gap-4">
                 <div>
-                    <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2">Penulis Default</label>
+                    <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2">Penulis (Author)</label>
                     <div class="flex items-center gap-3 bg-gray-50 py-2.5 px-4 rounded-xl border border-gray-100">
-                        <div class="w-6 h-6 bg-[#0a362d] rounded-lg flex items-center justify-center text-white text-[10px] font-black uppercase">D</div>
-                        <input type="text" class="bg-transparent border-none text-[11px] font-bold text-gray-400 italic outline-none w-full uppercase" value="DIMAS RIYAN WIRAYUDA" readonly>
+                        <div class="w-6 h-6 bg-[#0a362d] rounded-lg flex items-center justify-center text-white text-[10px] font-black uppercase">
+                            {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
+                        </div>
+                        <input type="text" name="penulis" class="bg-transparent border-none text-[11px] font-bold text-gray-600 outline-none w-full uppercase"
+                               value="{{ Auth::user()->name ?? 'GUEST' }}" readonly>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2">Instruksi</label>
+                    <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-2">Informasi Sistem</label>
                     <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100">
                         <p class="text-[9px] text-amber-800 italic font-medium leading-relaxed uppercase">
-                            * Pastikan gambar berformat JPG/PNG max 2MB.<br>
-                            * Slug akan terbentuk otomatis berdasarkan judul.
+                            * Login sebagai: {{ Auth::user()->email ?? '-' }}<br>
+                            * Pastikan gambar berformat JPG/PNG max 2MB.
                         </p>
                     </div>
                 </div>
@@ -95,6 +100,23 @@
 </form>
 
 <script>
+    // Fungsi untuk munculkan/sembunyikan Sub Judul
+    function toggleSubJudul() {
+        const kategori = document.getElementById('kategoriSelect').value;
+        const wrapper = document.getElementById('wrapperSubJudul');
+        const input = document.getElementById('sub_judul');
+
+        if (kategori === 'Prestasi') {
+            wrapper.classList.remove('hidden');
+        } else {
+            wrapper.classList.add('hidden');
+            input.value = ''; // Kosongkan nilai jika pindah ke Proker
+        }
+    }
+
+    // Jalankan saat halaman pertama load (jika ada nilai 'old' dari validasi)
+    window.onload = toggleSubJudul;
+
     function displayFileName() {
         const input = document.getElementById('gambarInput');
         const fileName = document.getElementById('fileName');

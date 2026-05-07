@@ -32,20 +32,21 @@
 
                     <ul class="absolute left-0 top-full mt-0 w-64 bg-white text-[#0a362d] rounded-b-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 border-t-4 border-amber-500 overflow-hidden">
                         @php
+                            // Slug disamakan persis dengan yang ada di DivisiController
                             $divisis = [
-                                'bph' => 'Badan Pengurus Harian',
-                                'kominfo' => 'Divisi Kominfo',
-                                'humas' => 'Divisi Humas',
-                                'web' => 'Divisi Web',
-                                'uiux' => 'Divisi UI/UX',
-                                'mobile' => 'Divisi Mobile',
-                                'data' => 'Divisi Data',
-                                'devops' => 'Divisi Devops'
+                                'badan-pengurus-harian' => 'Badan Pengurus Harian',
+                                'divisi-kominfo'        => 'Divisi Kominfo',
+                                'divisi-humas'          => 'Divisi Humas',
+                                'divisi-web'            => 'Divisi Web',
+                                'divisi-uiux'           => 'Divisi UI/UX',
+                                'divisi-mobile'         => 'Divisi Mobile',
+                                'divisi-data'           => 'Divisi Data',
+                                'divisi-devops'         => 'Divisi Devops'
                             ];
                         @endphp
                         @foreach($divisis as $slug => $name)
                         <li>
-                            <a href="{{ route('divisi.show', $slug) }}" class="block px-6 py-3 hover:bg-gray-100 hover:text-amber-600 transition border-b border-gray-50 text-xs font-bold uppercase">
+                            <a href="{{ route('divisi.show', $slug) }}" class="block px-6 py-3 hover:bg-gray-100 hover:text-amber-600 transition border-b border-gray-50 text-xs font-bold uppercase {{ request()->fullUrlIs(route('divisi.show', $slug)) ? 'text-amber-600 bg-gray-50' : '' }}">
                                 {{ $name }}
                             </a>
                         </li>
@@ -64,6 +65,7 @@
                 </li>
             </ul>
         </div>
+
         <div class="flex items-center">
             @auth
                 <a href="{{ route('admin.dashboard') }}" target="_blank" class="bg-white text-[#0a362d] px-5 py-2 rounded-xl text-xs font-bold hover:bg-amber-500 hover:text-white transition-all shadow-lg border-2 border-amber-500">

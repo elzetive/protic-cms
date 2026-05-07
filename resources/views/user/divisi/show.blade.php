@@ -15,7 +15,10 @@
         <div class="md:w-1/2">
             <div class="relative group">
                 <div class="absolute -top-4 -right-4 w-full h-full border-2 border-amber-500 rounded-xl z-0 transition-all duration-300 group-hover:top-0 group-hover:right-0"></div>
-                <img src="{{ asset('img/' . $data['img_group']) }}" class="relative z-10 rounded-xl shadow-2xl w-full object-cover h-[350px]">
+                {{-- PERBAIKAN: Asset gambar group --}}
+                <img src="{{ asset('img/' . $data['img_group']) }}"
+                     class="relative z-10 rounded-xl shadow-2xl w-full object-cover h-[350px]"
+                     onerror="this.src='{{ asset('img/default-team.jpg') }}'">
             </div>
         </div>
     </div>
@@ -39,27 +42,29 @@
                         <div class="group relative bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-3 shadow-2xl transition-all duration-500 hover:bg-white/10 hover:-translate-y-4 hover:border-amber-500/50">
 
                             <div class="relative overflow-hidden rounded-2xl mb-5 shadow-inner">
-                                <img src="{{ asset('storage/' . $member->foto) }}" class="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ $member->nama }}">
+                                {{-- PERBAIKAN: Ambil foto dari relasi mahasiswa --}}
+                                <img src="{{ $member->mahasiswa->foto ? asset('storage/' . $member->mahasiswa->foto) : 'https://ui-avatars.com/api/?name=' . urlencode($member->mahasiswa->nama) . '&background=0a362d&color=fff' }}"
+                                     class="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-110"
+                                     alt="{{ $member->mahasiswa->nama }}">
                                 <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             </div>
 
                             <div class="text-center pb-4">
                                 <div class="w-8 h-[2px] bg-amber-500 mx-auto mb-3 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
 
-                                <h4 class="font-black text-white text-[10px] uppercase tracking-wider leading-tight px-2 group-hover:text-amber-400 transition-colors truncate" title="{{ $member->nama }}">
+                                {{-- PERBAIKAN: Logika Nama > 25 Karakter --}}
+                                <h4 class="font-black text-white text-[10px] uppercase tracking-wider leading-tight px-2 group-hover:text-amber-400 transition-colors truncate" title="{{ $member->mahasiswa->nama }}">
                                     @php
-                                        $fullName = $member->nama;
+                                        $fullName = strtoupper($member->mahasiswa->nama);
                                         $names = explode(' ', $fullName);
                                         $count = count($names);
                                         $threshold = 25;
 
                                         if (strlen($fullName) > $threshold && $count > 1) {
                                             $processedName = "";
-                                            // Gabungkan semua kata kecuali kata terakhir
                                             for ($i = 0; $i < $count - 1; $i++) {
                                                 $processedName .= $names[$i] . " ";
                                             }
-                                            // Tambahkan inisial kata terakhir
                                             $processedName .= substr($names[$count - 1], 0, 1) . ".";
                                         } else {
                                             $processedName = $fullName;
