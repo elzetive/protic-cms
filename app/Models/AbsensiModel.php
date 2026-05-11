@@ -9,6 +9,8 @@ class AbsensiModel extends Model
 {
     use HasFactory;
 
+    protected $table = 'absensi_models';
+
     protected $fillable = [
         'nama_kegiatan',
         'tanggal',
@@ -16,4 +18,9 @@ class AbsensiModel extends Model
         'lokasi',
         'token_absensi'
     ];
+
+    public function kehadiran()
+    {
+        return $this->hasMany(KehadiranModel::class, 'absensi_id');
+    }
 }

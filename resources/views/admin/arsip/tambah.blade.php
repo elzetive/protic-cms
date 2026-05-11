@@ -15,8 +15,8 @@
 <form action="{{ route('admin.arsip.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 pb-10 animate-in fade-in duration-500">
     @csrf
 
-    <div class="flex items-center justify-between">
-        <div class="flex flex-col">
+    <div class="flex items-center justify-between px-2">
+        <div class="flex flex-col text-left">
             <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Tambah Arsip</h1>
             <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1 italic">Unggah dokumen baru ke server PROTIC</p>
         </div>
@@ -31,7 +31,6 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
         <div class="md:col-span-1 space-y-4">
             <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm text-center relative overflow-hidden">
                 <i class="fa-solid fa-box-archive absolute -right-4 -top-4 text-6xl text-gray-50/50"></i>
@@ -53,67 +52,43 @@
                     <input type="file" name="file_dokumen" id="fileInput" class="hidden" accept=".pdf,.doc,.docx,.xls,.xlsx" onchange="previewFileStatus()">
                 </label>
             </div>
-
-            <div class="bg-amber-50 p-6 rounded-[2rem] border border-amber-100 italic">
-                <h5 class="text-[9px] font-black text-amber-800 uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-info"></i> Petunjuk Upload
-                </h5>
-                <ul class="text-[8px] text-amber-700 space-y-1 font-bold uppercase leading-relaxed">
-                    <li>- Gunakan Nama Dokumen yang Jelas</li>
-                    <li>- Maksimal Ukuran File adalah 5MB</li>
-                    <li>- Format yang Didukung: PDF, DOCX, XLSX</li>
-                </ul>
-            </div>
         </div>
 
         <div class="md:col-span-2 space-y-4">
-            <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm grid grid-cols-2 gap-6 uppercase">
+            <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm grid grid-cols-2 gap-6 uppercase text-left">
 
-                <div class="col-span-2">
+                <div class="col-span-2 text-left">
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2 ml-1">Nama Dokumen</label>
                     <input type="text" name="nama_dokumen" value="{{ old('nama_dokumen') }}" required
                         class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-2xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase placeholder:text-gray-300"
-                        placeholder="CONTOH: LAPORAN KAS BULAN MEI" oninput="this.value = this.value.toUpperCase()">
+                        placeholder="CONTOH: SURAT UNDANGAN RAPAT" oninput="this.value = this.value.toUpperCase()">
                 </div>
 
-                <div>
+                <div class="text-left">
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2 ml-1">Kategori</label>
                     <div class="relative">
                         <select name="kategori" required class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-2xl text-xs font-bold focus:outline-none appearance-none cursor-pointer hover:border-amber-500 transition-all uppercase">
                             <option value="" disabled selected>PILIH KATEGORI</option>
                             <option value="SURAT">SURAT MENYURAT</option>
-                            <option value="LAPORAN">LAPORAN KEGIATAN</option>
-                            <option value="PROPOSAL">PROPOSAL</option>
+                            <option value="NOTULENSI">NOTULENSI KEGIATAN</option>
                             <option value="LAINNYA">DOKUMEN LAINNYA</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px]"></i>
                     </div>
                 </div>
 
-                <div>
+                <div class="text-left">
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2 ml-1">Tanggal Dokumen</label>
                     <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required
                         class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-2xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase">
                 </div>
 
-                <div class="col-span-2">
-                    <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2 ml-1">Privasi Dokumen</label>
-                    <div class="relative">
-                        <select name="status" class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-2xl text-xs font-bold focus:outline-none appearance-none cursor-pointer hover:border-amber-500 transition-all uppercase">
-                            <option value="PUBLIK">PUBLIK (DOWNLOAD BEBAS)</option>
-                            <option value="INTERNAL">INTERNAL (PENGURUS SAJA)</option>
-                        </select>
-                        <i class="fa-solid fa-lock absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px]"></i>
-                    </div>
-                </div>
-
-                <div class="col-span-2">
+                <div class="col-span-2 text-left">
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2 ml-1">Deskripsi Tambahan</label>
                     <textarea name="deskripsi" rows="4"
                         class="w-full bg-gray-50 border border-gray-100 py-4 px-5 rounded-[2rem] text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase resize-none"
                         placeholder="MASUKKAN KETERANGAN JIKA ADA..." oninput="this.value = this.value.toUpperCase()">{{ old('deskripsi') }}</textarea>
                 </div>
-
             </div>
         </div>
     </div>

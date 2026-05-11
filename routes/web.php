@@ -14,11 +14,6 @@ use App\Http\Controllers\Admin\KasController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\ArsipController;
 
-/*
-|--------------------------------------------------------------------------
-| User / Public Routes
-|--------------------------------------------------------------------------
-*/
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 Route::get('/divisi/{slug}', [DivisiController::class, 'show'])->name('divisi.show');
@@ -26,32 +21,23 @@ Route::get('/proker', [ProkerController::class, 'index'])->name('proker');
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
 Route::get('/konten/{slug}', [BerandaController::class, 'show'])->name('konten.detail');
 
-/*
-|--------------------------------------------------------------------------
-| Auth Routes
-|--------------------------------------------------------------------------
-*/
+Route::get('/absen/{token}', [AbsensiController::class, 'showFormAbsen'])->name('absensi.form');
+Route::post('/absen/simpan', [AbsensiController::class, 'submitAbsen'])->name('absensi.submit');
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () { return view('auth.login'); })->name('login');
     Route::get('/admin/login', function () { return view('auth.login'); })->name('admin.login');
     Route::post('/login', [AuthController::class, 'loginAuthenticate'])->name('login.submit');
-
     Route::get('/register', function () { return view('auth.register'); })->name('register');
     Route::post('/register', [AuthController::class, 'registerStore'])->name('register.submit');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| Admin Routes (Middleware Auth)
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    // Manajemen Konten
     Route::controller(KontenController::class)->group(function () {
         Route::get('/konten', 'index')->name('admin.konten.index');
         Route::get('/konten/tambah', 'create')->name('admin.konten.tambah');
@@ -61,7 +47,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('/konten/hapus/{id}', 'destroy')->name('admin.konten.destroy');
     });
 
-    // Manajemen Pengurus (Database)
     Route::controller(PengurusController::class)->group(function () {
         Route::get('/database', 'index')->name('admin.database.index');
         Route::get('/database/tambah', 'create')->name('admin.database.tambah');
@@ -69,53 +54,42 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/database/edit/{id}', 'edit')->name('admin.database.edit');
         Route::put('/database/update/{id}', 'update')->name('admin.database.update');
         Route::delete('/database/hapus/{id}', 'destroy')->name('admin.database.destroy');
-
-        // Fitur Bulk & Clone
         Route::post('/database/clone/{id}', 'clone')->name('admin.database.clone');
         Route::post('/database/bulk-clone', 'bulkClone')->name('admin.database.bulkClone');
         Route::post('/database/bulk-delete', 'bulkDestroy')->name('admin.database.bulkDestroy');
     });
 
-/*
-    |--------------------------------------------------------------------------
-    | Manajemen Kas (Transaksi & Iuran)
-    |--------------------------------------------------------------------------
-    */
     Route::prefix('kas')->group(function() {
         Route::controller(KasController::class)->group(function () {
-
-            // --- BAGIAN TRANSAKSI UMUM ---
             Route::get('/transaksi', 'indexTransaksi')->name('admin.kas.index');
             Route::post('/transaksi/simpan', 'store')->name('admin.kas.store');
-            Route::get('/transaksi/detail/{id}', 'show')->name('admin.kas.show'); // Edit Transaksi
+            Route::get('/transaksi/detail/{id}', 'show')->name('admin.kas.show');
             Route::put('/transaksi/update/{id}', 'update')->name('admin.kas.update');
             Route::delete('/transaksi/hapus/{id}', 'destroy')->name('admin.kas.destroy');
 
-            // --- BAGIAN IURAN ---
             Route::get('/iuran', 'indexIuran')->name('admin.iuran.index');
-
-            // Route untuk Halaman Tambah Iuran (File tambah.blade.php)
             Route::get('/iuran/tambah', 'createIuran')->name('admin.iuran.tambah');
-
-            // Route untuk Riwayat Iuran per Bulan (File detail.blade.php versi 1)
             Route::get('/iuran/rekap/{periode}/{bulan}', 'detailIuran')->name('admin.iuran.rekap');
-
-            // Route untuk Riwayat Iuran per Orang (File detail.blade.php versi 2)
             Route::get('/iuran/show/{nama}', 'showIuran')->name('admin.iuran.show');
-
         });
     });
-    // Manajemen Absensi
+
     Route::prefix('absensi')->group(function() {
-        Route::get('/', [AbsensiController::class, 'index'])->name('admin.absensi.index');
-        Route::post('/simpan', [AbsensiController::class, 'store'])->name('admin.absensi.store');
+        Route::controller(AbsensiController::class)->group(function () {
+            Route::get('/', 'index')->name('admin.absensi.index');
+            Route::post('/simpan', 'store')->name('admin.absensi.store');
+            Route::get('/detail/{id}', 'show')->name('admin.absensi.show');
+            Route::delete('/hapus/{id}', 'destroy')->name('admin.absensi.destroy');
+        });
     });
 
-    // Manajemen Arsip
     Route::prefix('arsip')->group(function() {
-        Route::get('/', [ArsipController::class, 'index'])->name('admin.arsip.index');
-        Route::get('/tambah', [ArsipController::class, 'tambah'])->name('admin.arsip.tambah');
-        Route::post('/simpan', [ArsipController::class, 'store'])->name('admin.arsip.store');
-        Route::delete('/hapus/{id}', [ArsipController::class, 'destroy'])->name('admin.arsip.destroy');
+        Route::controller(ArsipController::class)->group(function () {
+            Route::get('/', 'index')->name('admin.arsip.index');
+            Route::get('/tambah', 'tambah')->name('admin.arsip.tambah');
+            Route::post('/simpan', 'store')->name('admin.arsip.store');
+            Route::delete('/hapus/{id}', 'destroy')->name('admin.arsip.destroy');
+        });
     });
+
 });

@@ -17,4 +17,5 @@ class PengurusModel extends Model
     {
         return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id');
     }
+
 }
