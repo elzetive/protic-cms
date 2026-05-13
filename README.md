@@ -28,7 +28,7 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di perangkat lokal Anda:
 2. **Install Dependensi PHP**
 
    ```bash
-composer install
+    composer install
 
 3. **Konfigurasi Database**
    * Buat database baru di MySQL dengan nama `protic_cms`.
@@ -44,12 +44,12 @@ composer install
 Jalankan perintah ini untuk membuat tabel dan mengisi akun admin default:
 
    ```bash
-php artisan migrate:fresh --seed
+    php artisan migrate:fresh --seed
 
 6. **Jalankan Server**
 
    ```bash
-php artisan serve
+    php artisan serve
 
 ## 🔐 Akses Login Admin
 Gunakan akun default berikut untuk masuk ke Dashboard:
