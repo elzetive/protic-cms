@@ -11,8 +11,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        UserModel::factory()->create([
+        UserModel::create([
             'name' => 'Admin PROTIC',
+            'username' => 'admin_protic',
             'email' => 'admin@protic.com',
             'password' => Hash::make('protic2026'),
         ]);
