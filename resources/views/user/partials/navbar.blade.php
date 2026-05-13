@@ -53,19 +53,21 @@
                     </ul>
                 </li>
 
-                <li class="relative group h-full flex items-center">
-                    <a href="{{ route('proker') }}"
-                       class="{{ request()->routeIs('proker') || request()->is('konten/*') ? 'text-amber-400' : 'hover:text-green-300' }} transition duration-300">
-                       Program Kerja
-                    </a>
-                    <span class="absolute -bottom-2 left-0 {{ request()->routeIs('proker') || request()->is('konten/*') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </li>
+<li class="relative group h-full flex items-center">
+    <a href="{{ route('proker') }}"
+       class="{{ request()->routeIs('proker') || (isset($konten) && $konten->kategori == 'Proker') ? 'text-amber-400' : 'hover:text-green-300' }} transition duration-300">
+       Program Kerja
+    </a>
+    <span class="absolute -bottom-2 left-0 {{ request()->routeIs('proker') || (isset($konten) && $konten->kategori == 'Proker') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+</li>
 
-                <li class="relative group h-full flex items-center">
-                    <a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'text-amber-400' : 'hover:text-green-300' }} transition duration-300">Prestasi</a>
-                    <span class="absolute -bottom-2 left-0 {{ request()->routeIs('prestasi') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </li>
-            </ul>
+<li class="relative group h-full flex items-center">
+    <a href="{{ route('prestasi') }}"
+       class="{{ request()->routeIs('prestasi') || (isset($konten) && $konten->kategori == 'Prestasi') ? 'text-amber-400' : 'hover:text-green-300' }} transition duration-300">
+       Prestasi
+    </a>
+    <span class="absolute -bottom-2 left-0 {{ request()->routeIs('prestasi') || (isset($konten) && $konten->kategori == 'Prestasi') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+</li>            </ul>
         </div>
 
         <div class="flex items-center">

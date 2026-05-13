@@ -132,7 +132,6 @@
                                     'DIVISI DATA' => 7, 'DIVISI DEVOPS' => 8
                                 ];
 
-                                // PERBAIKAN: Mengurutkan berdasarkan data mahasiswa
                                 $sortedPengurus = $pengurus->where('angkatan', $thn)->sort(function($a, $b) use ($jobPriority, $divPriority) {
                                     $pA = $jobPriority[strtoupper($a->jabatan)] ?? 99;
                                     $pB = $jobPriority[strtoupper($b->jabatan)] ?? 99;
@@ -193,7 +192,6 @@
             </div>
         </div>
 
-        <!-- Modal Clone -->
         <div x-show="showCloneModal" x-cloak class="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
             <div @click.away="showCloneModal = false" class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in zoom-in duration-300">
                 <div class="flex items-center gap-4 mb-6">
@@ -245,7 +243,6 @@
             selectAll.addEventListener('change', function() {
                 const checkboxes = document.querySelectorAll('.child-checkbox');
                 checkboxes.forEach(cb => {
-                    // Hanya centang yang tampil sesuai periode aktif
                     if (cb.closest('tr').style.display !== 'none') {
                         cb.checked = this.checked;
                     }

@@ -1,6 +1,6 @@
 @extends('user.layouts.app')
 
-@section('title', $konten->judul . ' - UKM PROTIC PNC')
+@section('title', strtoupper($konten->kategori) . ' - ' . $konten->judul)
 
 @section('content')
 <article class="min-h-screen bg-white pb-32 animate-in fade-in duration-700">
@@ -12,7 +12,8 @@
 
         <div class="container mx-auto px-6 lg:px-20 relative z-10 text-left">
             <div class="inline-flex items-center gap-3 bg-amber-500 text-[#0a362d] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-xl animate-in slide-in-from-bottom duration-700">
-                <i class="fa-solid fa-tag"></i> {{ $konten->kategori }}
+                <i class="fa-solid {{ $konten->kategori == 'Proker' ? 'fa-calendar-check' : 'fa-trophy' }}"></i>
+                {{ $konten->kategori == 'Proker' ? 'Program Kerja' : 'Prestasi UKM' }}
             </div>
 
             <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none max-w-4xl mb-8">
@@ -26,7 +27,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-user-pen text-amber-500 text-sm"></i>
-                    <span>Admin PROTIC System</span>
+                    <span>Admin PROTIC</span>
                 </div>
             </div>
         </div>
@@ -37,17 +38,19 @@
 
             <div class="w-full lg:w-8/12 flex flex-col gap-6">
                 <div class="flex">
-                    <a href="{{ url()->previous() }}" class="bg-white hover:bg-amber-500 text-[#0a362d] hover:text-white px-6 py-3 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3 group border border-gray-100">
+                    <a href="{{ $konten->kategori == 'Proker' ? route('proker') : route('prestasi') }}"
+                       class="bg-white hover:bg-amber-500 text-[#0a362d] hover:text-white px-6 py-3 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3 group border border-gray-100">
                         <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest">Kembali</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest">
+                            Kembali
+                        </span>
                     </a>
                 </div>
 
                 <div class="bg-white p-8 md:p-16 rounded-[3rem] shadow-[0_30px_100px_rgba(10,54,45,0.08)] border border-gray-50">
-
                     @if($konten->gambar)
                     <div class="mb-12 rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-black/5">
-                        <img src="{{ asset('storage/' . $konten->gambar) }}" class="w-full h-full object-cover aspect-video">
+                        <img src="{{ asset('storage/' . $konten->gambar) }}" class="w-full h-full object-cover aspect-video" alt="{{ $konten->judul }}">
                     </div>
                     @endif
 
@@ -58,7 +61,7 @@
                         @if($konten->isi)
                             {!! $konten->isi !!}
                         @else
-                            <p class="italic text-gray-400">Deskripsi konten belum tersedia.</p>
+                            <p class="italic text-gray-400">Deskripsi {{ strtolower($konten->kategori) }} belum tersedia.</p>
                         @endif
                     </div>
 
@@ -87,8 +90,9 @@
                 </div>
 
                 <div class="bg-gray-50 p-8 rounded-[2.5rem] border border-gray-100">
-                    <h4 class="text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-8 flex items-center gap-3">
-                        <span class="w-8 h-[2px] bg-amber-500"></span> Kegiatan Lain
+                    <h4 class="text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-8 flex items-center gap-3 leading-none">
+                        <span class="w-8 h-[2px] bg-amber-500"></span>
+                        {{ $konten->kategori == 'Proker' ? 'Kegiatan Proker Lain' : 'Prestasi Lainnya' }}
                     </h4>
 
                     <div class="space-y-6 text-left">

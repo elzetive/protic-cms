@@ -51,7 +51,6 @@ class AbsensiController extends Controller
         return redirect()->route('admin.absensi.index')->with('success', 'Kegiatan berhasil dihapus!');
     }
 
-    // --- LOGIC USER (SCAN QR) ---
     public function showFormAbsen($token)
     {
         $kegiatan = AbsensiModel::where('token_absensi', $token)->firstOrFail();
