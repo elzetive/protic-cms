@@ -27,7 +27,7 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di perangkat lokal Anda:
 
 2. **Install Dependensi PHP**
 
-Bash
+   ```bash
 composer install
 
 3. **Konfigurasi Database**
@@ -43,12 +43,12 @@ composer install
 5. **Migrasi & Seeder**
 Jalankan perintah ini untuk membuat tabel dan mengisi akun admin default:
 
-Bash
+   ```bash
 php artisan migrate:fresh --seed
 
 6. **Jalankan Server**
 
-Bash
+   ```bash
 php artisan serve
 
 ## 🔐 Akses Login Admin
