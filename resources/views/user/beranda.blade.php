@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="w-full lg:w-1/2 text-left">
+            <div class="w-full lg:w-1/2 text-left text-wrap">
                 <div class="inline-flex items-center gap-4 mb-6">
                     <div class="h-[2px] w-12 bg-amber-500"></div>
                     <span class="text-emerald-600 font-black uppercase tracking-[0.3em] text-[10px]">Who We Are</span>
@@ -94,7 +94,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
             @forelse($proker as $item)
-            <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group border border-gray-100 flex flex-col h-full">
+            <div onclick="openProkerModal('{{ $item->id }}')" class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group border border-gray-100 flex flex-col h-full cursor-pointer hover:-translate-y-2">
                 <div class="relative h-64 overflow-hidden shrink-0">
                     @if($item->gambar)
                         <img src="{{ asset('storage/' . $item->gambar) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="p-8 flex flex-col flex-grow">
+                <div class="p-8 flex flex-col flex-grow text-left">
                     <div class="flex items-center gap-3 mb-4 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
                         <i class="fa-solid fa-calendar-days text-amber-500"></i>
                         {{ $item->created_at->format('d M, Y') }}
@@ -118,10 +118,39 @@
                     <h4 class="text-xl font-black text-[#0a362d] uppercase leading-tight mb-6 line-clamp-2 flex-grow">
                         {{ $item->judul }}
                     </h4>
-                    <a href="{{ route('konten.detail', $item->slug) }}" class="inline-flex items-center gap-3 text-amber-600 font-black text-[11px] uppercase tracking-[0.2em] group/link">
-                        Detail Kegiatan
-                        <div class="h-[2px] w-6 bg-amber-500 transition-all duration-300 group-hover/link:w-12"></div>
-                    </a>
+                    <div class="inline-flex items-center gap-3 text-amber-600 font-black text-[11px] uppercase tracking-[0.2em] group/link">
+                        Baca Selengkapnya
+                        <div class="h-[2px] w-6 bg-amber-500 transition-all duration-300 group-hover:w-12"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-{{ $item->id }}" class="fixed inset-0 z-[999] hidden items-center justify-center p-4 bg-[#0a362d]/80 backdrop-blur-md transition-all duration-300">
+                <div class="bg-white w-full max-w-5xl max-h-[90vh] rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in duration-300">
+                    <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden">
+                        <img src="{{ asset('storage/' . $item->gambar) }}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-full md:w-7/12 p-8 md:p-16 overflow-y-auto text-left relative no-scrollbar">
+                        <button onclick="event.stopPropagation(); closeProkerModal('{{ $item->id }}')" class="absolute top-6 right-6 text-gray-400 hover:text-rose-500 transition-all active:scale-90">
+                            <i class="fa-solid fa-circle-xmark text-3xl"></i>
+                        </button>
+
+                        <span class="text-amber-500 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">{{ $item->kategori }}</span>
+                        <h3 class="text-3xl md:text-4xl font-black text-[#0a362d] uppercase tracking-tighter mb-8 leading-tight">{{ $item->judul }}</h3>
+
+                        <div class="prose prose-sm max-w-none text-gray-500 leading-relaxed font-medium text-justify">
+                            {!! $item->konten !!}
+                        </div>
+
+                        <div class="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic text-center md:text-left">
+                                PROTIC PNC System &bull; Diunggah {{ $item->created_at->format('d/m/Y') }}
+                            </div>
+                            <a href="{{ route('konten.detail', $item->slug) }}" class="w-full md:w-auto text-center bg-[#0a362d] text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-amber-600 transition-all shadow-xl shadow-[#0a362d]/10">
+                                Lihat Halaman Detail
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             @empty
@@ -154,7 +183,7 @@
                     <div class="w-full h-full bg-gray-200"></div>
                 @endif
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d] via-[#0a362d]/40 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 p-8 w-full">
+                <div class="absolute bottom-0 left-0 p-8 w-full text-left">
                     <p class="text-amber-500 text-[9px] font-black uppercase tracking-widest mb-2">Prestasi UKM</p>
                     <h4 class="text-white text-sm font-black uppercase leading-snug line-clamp-2">
                         {{ $item->judul }}
@@ -169,4 +198,37 @@
         </div>
     </div>
 </section>
+
+<script>
+    function openProkerModal(id) {
+        const modal = document.getElementById('modal-' + id);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProkerModal(id) {
+        const modal = document.getElementById('modal-' + id);
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+    }
+
+    window.addEventListener('click', function(event) {
+        if (event.target.id.startsWith('modal-')) {
+            const id = event.target.id.split('-')[1];
+            closeProkerModal(id);
+        }
+    });
+</script>
+
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 @endsection

@@ -56,7 +56,7 @@
 
         <div>
             <label class="block text-[11px] font-black text-[#0a362d] uppercase tracking-widest mb-1.5">Isi Konten</label>
-            <textarea name="isi" rows="6" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all resize-none uppercase placeholder:uppercase" placeholder="Tuliskan isi konten di sini...">{{ old('isi') }}</textarea>
+            <textarea name="isi" rows="6" required class="w-full bg-gray-50 border border-gray-100 py-3 px-5 rounded-xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all resize-none placeholder:uppercase" placeholder="Tuliskan isi konten di sini...">{{ old('isi') }}</textarea>
         </div>
     </div>
 
@@ -100,7 +100,6 @@
 </form>
 
 <script>
-    // Fungsi untuk munculkan/sembunyikan Sub Judul
     function toggleSubJudul() {
         const kategori = document.getElementById('kategoriSelect').value;
         const wrapper = document.getElementById('wrapperSubJudul');
@@ -110,11 +109,10 @@
             wrapper.classList.remove('hidden');
         } else {
             wrapper.classList.add('hidden');
-            input.value = ''; // Kosongkan nilai jika pindah ke Proker
+            input.value = '';
         }
     }
 
-    // Jalankan saat halaman pertama load (jika ada nilai 'old' dari validasi)
     window.onload = toggleSubJudul;
 
     function displayFileName() {

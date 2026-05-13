@@ -55,7 +55,7 @@
 
                 <div class="col-span-2">
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Isi Konten Utama</label>
-                    <textarea name="isi" rows="4" required class="w-full bg-gray-50 border-none py-4 px-6 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-amber-500 text-[#0a362d] uppercase no-scrollbar">{{ old('isi', $konten->isi) }}</textarea>
+                    <textarea name="isi" rows="4" required class="w-full bg-gray-50 border-none py-4 px-6 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-amber-500 text-[#0a362d] no-scrollbar">{{ old('isi', $konten->isi) }}</textarea>
                 </div>
             </div>
 

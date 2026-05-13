@@ -9,7 +9,6 @@ class DivisiController extends Controller
 {
     public function show($slug)
     {
-        // Key disesuaikan dengan format Str::slug (huruf kecil, spasi jadi dash)
         $mapDivisi = [
             'badan-pengurus-harian' => 'BADAN PENGURUS HARIAN',
             'divisi-kominfo'        => 'DIVISI KOMINFO',

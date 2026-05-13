@@ -3,7 +3,6 @@
 @section('title', 'Profil - UKM PROTIC PNC')
 
 @section('content')
-    {{-- SECTION: TENTANG KAMI --}}
     <section class="py-24 bg-white overflow-hidden">
         <div class="container mx-auto px-6 lg:px-20 flex flex-col md:flex-row items-center gap-16">
             <div class="md:w-1/2">
@@ -22,7 +21,6 @@
         </div>
     </section>
 
-    {{-- SECTION: VISI & MISI --}}
     <section class="py-24 bg-gray-50 relative overflow-hidden">
         <div class="container mx-auto px-6 lg:px-20">
             <h2 class="text-center text-4xl font-black text-[#0a362d] mb-16 tracking-widest uppercase">Visi & Misi</h2>
@@ -67,7 +65,6 @@
         </div>
     </section>
 
-    {{-- SECTION: OUR GOALS --}}
     <section class="py-24 bg-white">
         <div class="container mx-auto px-6 lg:px-20 text-center">
             <h2 class="text-4xl font-black text-[#0a362d] mb-20 tracking-widest uppercase">Our Goals</h2>
@@ -95,7 +92,6 @@
         </div>
     </section>
 
-    {{-- SECTION: OUR TEAM --}}
     <section class="py-24 bg-gradient-to-br from-[#0a362d] via-[#082a23] to-[#041411]">
         <div class="container mx-auto px-6 lg:px-20 text-center">
             <h2 class="text-4xl font-black text-white mb-4 tracking-[0.4em] uppercase">Our Team</h2>
@@ -104,7 +100,6 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 @foreach($listDivisi as $div)
                     @php
-                        // MAPPING DISESUAIKAN DENGAN NAMA FILE BARU KAMU
                         $map = [
                             'BADAN PENGURUS HARIAN' => ['s' => 'badan-pengurus-harian', 'i' => 'badan-pengurus-harian.jpg'],
                             'DIVISI KOMINFO'        => ['s' => 'divisi-kominfo',        'i' => 'divisi-kominfo.jpg'],

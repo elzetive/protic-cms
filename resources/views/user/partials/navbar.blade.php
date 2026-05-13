@@ -4,7 +4,7 @@
         <div class="flex items-center">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-10">
-                <div class="flex flex-col mr-16">
+                <div class="flex flex-col mr-16 text-left">
                     <h1 class="font-bold text-sm leading-tight uppercase text-white">UKM PROTIC PNC</h1>
                     <p class="text-[10px] italic text-amber-500 font-medium uppercase tracking-wide">Improve Skill to Innovate</p>
                 </div>
@@ -30,9 +30,8 @@
                     </div>
                     <span class="absolute bottom-0 left-0 {{ request()->routeIs('divisi.show') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
 
-                    <ul class="absolute left-0 top-full mt-0 w-64 bg-white text-[#0a362d] rounded-b-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 border-t-4 border-amber-500 overflow-hidden">
+                    <ul class="absolute left-0 top-full mt-0 w-64 bg-white text-[#0a362d] rounded-b-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 border-t-4 border-amber-500 overflow-hidden text-left">
                         @php
-                            // Slug disamakan persis dengan yang ada di DivisiController
                             $divisis = [
                                 'badan-pengurus-harian' => 'Badan Pengurus Harian',
                                 'divisi-kominfo'        => 'Divisi Kominfo',
@@ -55,8 +54,11 @@
                 </li>
 
                 <li class="relative group h-full flex items-center">
-                    <a href="{{ route('proker') }}" class="{{ request()->routeIs('proker') ? 'text-amber-400' : 'hover:text-green-300' }} transition duration-300">Program Kerja</a>
-                    <span class="absolute -bottom-2 left-0 {{ request()->routeIs('proker') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+                    <a href="{{ route('proker') }}"
+                       class="{{ request()->routeIs('proker') || request()->is('konten/*') ? 'text-amber-400' : 'hover:text-green-300' }} transition duration-300">
+                       Program Kerja
+                    </a>
+                    <span class="absolute -bottom-2 left-0 {{ request()->routeIs('proker') || request()->is('konten/*') ? 'w-full' : 'w-0' }} h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
                 </li>
 
                 <li class="relative group h-full flex items-center">

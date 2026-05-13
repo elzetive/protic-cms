@@ -26,13 +26,11 @@ class KasController extends Controller
 
     public function indexIuran()
     {
-        // 1. Ambil semua data kas yang kategorinya adalah Nama Bulan (Iuran)
         $iuran = KasModel::whereIn('kategori', [
             'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
         ])->get();
 
-        // 2. Ambil data pengurus + mahasiswa (Eager Loading)
         $daftarPengurus = PengurusModel::with('mahasiswa')
             ->get()
             ->map(function($p) {
@@ -70,7 +68,6 @@ class KasController extends Controller
             'bukti'      => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
-        // Anti-Duplicate
         $isDuplicate = KasModel::where('kategori', $request->kategori)
             ->where('nominal', $request->nominal)
             ->where('tanggal', $request->tanggal)
@@ -84,7 +81,6 @@ class KasController extends Controller
         $data = $request->all();
         $data['keterangan'] = strtoupper($request->keterangan ?? '-');
 
-        // Simpan kategori sesuai input (Bulan atau Nama Kategori)
         $data['kategori'] = $request->kategori;
 
         if ($request->hasFile('bukti')) {
@@ -143,7 +139,6 @@ class KasController extends Controller
 
     public function showIuran($nama)
 {
-    // Mengambil data iuran khusus milik orang tersebut
     $riwayat = KasModel::where('keterangan', $nama)
         ->whereIn('kategori', ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'])
         ->orderBy('tanggal', 'desc')

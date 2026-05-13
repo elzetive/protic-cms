@@ -15,7 +15,6 @@
         <div class="md:w-1/2">
             <div class="relative group">
                 <div class="absolute -top-4 -right-4 w-full h-full border-2 border-amber-500 rounded-xl z-0 transition-all duration-300 group-hover:top-0 group-hover:right-0"></div>
-                {{-- PERBAIKAN: Asset gambar group --}}
                 <img src="{{ asset('img/' . $data['img_group']) }}"
                      class="relative z-10 rounded-xl shadow-2xl w-full object-cover h-[350px]"
                      onerror="this.src='{{ asset('img/default-team.jpg') }}'">
@@ -42,7 +41,6 @@
                         <div class="group relative bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-3 shadow-2xl transition-all duration-500 hover:bg-white/10 hover:-translate-y-4 hover:border-amber-500/50">
 
                             <div class="relative overflow-hidden rounded-2xl mb-5 shadow-inner">
-                                {{-- PERBAIKAN: Ambil foto dari relasi mahasiswa --}}
                                 <img src="{{ $member->mahasiswa->foto ? asset('storage/' . $member->mahasiswa->foto) : 'https://ui-avatars.com/api/?name=' . urlencode($member->mahasiswa->nama) . '&background=0a362d&color=fff' }}"
                                      class="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-110"
                                      alt="{{ $member->mahasiswa->nama }}">
@@ -52,7 +50,6 @@
                             <div class="text-center pb-4">
                                 <div class="w-8 h-[2px] bg-amber-500 mx-auto mb-3 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
 
-                                {{-- PERBAIKAN: Logika Nama > 25 Karakter --}}
                                 <h4 class="font-black text-white text-[10px] uppercase tracking-wider leading-tight px-2 group-hover:text-amber-400 transition-colors truncate" title="{{ $member->mahasiswa->nama }}">
                                     @php
                                         $fullName = strtoupper($member->mahasiswa->nama);

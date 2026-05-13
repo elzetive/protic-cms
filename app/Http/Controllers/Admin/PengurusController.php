@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengurusModel;
-use App\Models\MahasiswaModel; // Import Model Mahasiswa
+use App\Models\MahasiswaModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -13,7 +13,6 @@ class PengurusController extends Controller
 {
     public function index()
     {
-        // Hirarki Jabatan SQL
         $urutanJabatan = "CASE
             WHEN UPPER(jabatan) = 'KETUA' THEN 1
             WHEN UPPER(jabatan) = 'WAKIL KETUA' THEN 2
@@ -22,7 +21,6 @@ class PengurusController extends Controller
             WHEN UPPER(jabatan) = 'KEPALA DIVISI' THEN 5
             ELSE 6 END";
 
-        // Hirarki Divisi SQL
         $urutanDivisi = "CASE
             WHEN UPPER(divisi) = 'BADAN PENGURUS HARIAN' THEN 1
             WHEN UPPER(divisi) = 'DIVISI KOMINFO' THEN 2
@@ -34,7 +32,6 @@ class PengurusController extends Controller
             WHEN UPPER(divisi) = 'DIVISI DEVOPS' THEN 8
             ELSE 9 END";
 
-        // Join dengan tabel mahasiswa agar bisa sorting berdasarkan NIM/Nama dari tabel mahasiswa
         $pengurus = PengurusModel::select('pengurus.*')
             ->join('mahasiswa', 'pengurus.mahasiswa_id', '=', 'mahasiswa.id')
             ->orderByRaw($urutanJabatan)
@@ -55,45 +52,46 @@ class PengurusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
-            'nim' => 'required',
-            'jabatan' => 'required',
+            'nama'     => 'required|string|max:255',
+            'nim'      => 'required|string|max:20',
+            'jabatan'  => 'required',
+            'divisi'   => 'required',
             'angkatan' => 'required|numeric',
-            'foto' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ], [
+            'nama.required' => 'NAMA LENGKAP WAJIB DIISI!',
+            'nim.required'  => 'NIM WAJIB DIISI!',
         ]);
 
-        // 1. Sinkronisasi data Mahasiswa (Global)
-        // Jika NIM sudah ada, data nama & IG diupdate. Jika belum, buat baru.
         $mahasiswa = MahasiswaModel::updateOrCreate(
             ['nim' => $request->nim],
             [
-                'nama' => $request->nama,
-                'instagram' => $request->instagram,
+                'nama' => strtoupper($request->nama),
+                'instagram' => strtoupper($request->instagram),
             ]
         );
 
-        // 2. Handle Foto Mahasiswa (Profil Global)
         if ($request->hasFile('foto')) {
             if ($mahasiswa->foto) Storage::disk('public')->delete($mahasiswa->foto);
             $mahasiswa->foto = $request->file('foto')->store('uploads/pengurus', 'public');
             $mahasiswa->save();
         }
 
-        // 3. Cek apakah Mahasiswa ini sudah terdaftar di periode (angkatan) yang sama
         $sudahAda = PengurusModel::where('mahasiswa_id', $mahasiswa->id)
                                  ->where('angkatan', $request->angkatan)
                                  ->exists();
 
         if ($sudahAda) {
-            return back()->with('error', 'MAHASISWA INI SUDAH TERDAFTAR DI PERIODE ' . $request->angkatan);
+            return back()
+                ->withInput()
+                ->withErrors(['nim' => 'GAGAL! MAHASISWA DENGAN NIM ' . $request->nim . ' SUDAH TERDAFTAR SEBAGAI PENGURUS PADA PERIODE ' . $request->angkatan]);
         }
 
-        // 4. Simpan Data Jabatan ke tabel pengurus
         PengurusModel::create([
             'mahasiswa_id' => $mahasiswa->id,
-            'jabatan' => $request->jabatan,
-            'divisi' => $request->divisi,
-            'angkatan' => $request->angkatan,
+            'jabatan'      => strtoupper($request->jabatan),
+            'divisi'       => strtoupper($request->divisi),
+            'angkatan'     => $request->angkatan,
         ]);
 
         return redirect()->route('admin.database.index')->with('success', 'PENGURUS BERHASIL DITAMBAHKAN!');
@@ -111,18 +109,28 @@ class PengurusController extends Controller
         $mahasiswa = $pengurus->mahasiswa;
 
         $request->validate([
-            'nama' => 'required',
-            'nim' => 'required',
-            'jabatan' => 'required',
+            'nama'     => 'required',
+            'nim'      => 'required',
+            'jabatan'  => 'required',
             'angkatan' => 'required',
-            'foto' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'foto'     => 'image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        // 1. Update Identitas Mahasiswa (Global - berefek ke semua periode)
+        $cekNimLain = MahasiswaModel::where('nim', $request->nim)->first();
+        if ($cekNimLain && $cekNimLain->id !== $mahasiswa->id) {
+             $duplikatPeriode = PengurusModel::where('mahasiswa_id', $cekNimLain->id)
+                                            ->where('angkatan', $request->angkatan)
+                                            ->where('id', '!=', $id)
+                                            ->exists();
+             if ($duplikatPeriode) {
+                 return back()->withErrors(['nim' => 'NIM TERSEBUT SUDAH DIGUNAKAN OLEH PENGURUS LAIN DI PERIODE INI!']);
+             }
+        }
+
         $mahasiswa->update([
-            'nama' => $request->nama,
-            'nim'  => $request->nim,
-            'instagram' => $request->instagram
+            'nama'      => strtoupper($request->nama),
+            'nim'       => $request->nim,
+            'instagram' => strtoupper($request->instagram)
         ]);
 
         if ($request->hasFile('foto')) {
@@ -131,10 +139,9 @@ class PengurusController extends Controller
             $mahasiswa->save();
         }
 
-        // 2. Update Jabatan Spesifik Periode ini saja
         $pengurus->update([
-            'jabatan' => $request->jabatan,
-            'divisi' => $request->divisi,
+            'jabatan'  => strtoupper($request->jabatan),
+            'divisi'   => strtoupper($request->divisi),
             'angkatan' => $request->angkatan
         ]);
 
@@ -146,9 +153,7 @@ class PengurusController extends Controller
     public function destroy($id)
     {
         $pengurus = PengurusModel::findOrFail($id);
-        // Soft delete record pengurus (relasi mahasiswa & foto tetap aman untuk periode lain)
         $pengurus->delete();
-
         return redirect()->route('admin.database.index')->with('success', 'DATA PENGURUS BERHASIL DIHAPUS!');
     }
 
@@ -198,7 +203,6 @@ class PengurusController extends Controller
         }
 
         PengurusModel::whereIn('id', $ids)->delete();
-
         return back()->with('success', count($ids) . ' DATA PENGURUS BERHASIL DIHAPUS!');
     }
 }
