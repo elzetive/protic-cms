@@ -20,6 +20,12 @@
                     <i class="fa-solid fa-xmark"></i> Reset
                 </a>
             @endif
+
+            <a href="{{ route('admin.arsip.surat.create') }}"
+                class="bg-amber-500 text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-[#0a362d] transition-all shadow-md active:scale-95">
+                <i class="fa-solid fa-file-pen"></i> Buat Surat
+            </a>
+
             <a href="{{ route('admin.arsip.tambah') }}"
                 class="bg-[#0a362d] text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-amber-600 transition-all shadow-md active:scale-95">
                 <i class="fa-solid fa-cloud-arrow-up"></i> Tambah Arsip

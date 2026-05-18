@@ -14,7 +14,7 @@
                 @elseif(request()->routeIs('admin.iuran.*')) Kas Iuran
                 @elseif(request()->routeIs('admin.absensi.*')) Absensi
                 @elseif(request()->routeIs('admin.arsip.*')) Arsip
-                @else Admin Panel @endif
+                @else Admin @endif
             </h2>
         </div>
     </div>

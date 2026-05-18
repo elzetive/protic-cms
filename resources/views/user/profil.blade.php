@@ -5,7 +5,7 @@
 @section('content')
     <section class="py-24 bg-white overflow-hidden">
         <div class="container mx-auto px-6 lg:px-20 flex flex-col md:flex-row items-center gap-16">
-            <div class="md:w-1/2">
+            <div class="md:w-1/2 text-left">
                 <h2 class="text-4xl font-bold text-[#0a362d] mb-6 tracking-wider">TENTANG KAMI</h2>
                 <div class="w-20 h-1.5 bg-amber-500 mb-8 rounded-full"></div>
                 <p class="text-gray-600 leading-relaxed text-lg text-justify italic">
@@ -22,7 +22,7 @@
     </section>
 
     <section class="py-24 bg-gray-50 relative overflow-hidden">
-        <div class="container mx-auto px-6 lg:px-20">
+        <div class="container mx-auto px-6 lg:px-20 text-left">
             <h2 class="text-center text-4xl font-black text-[#0a362d] mb-16 tracking-widest uppercase">Visi & Misi</h2>
             <div class="grid md:grid-cols-2 gap-10">
                 @foreach(['Visi', 'Misi'] as $type)
@@ -35,7 +35,7 @@
                         <i class="fa-solid fa-{{ $type == 'Visi' ? 'eye' : 'bullseye' }} text-amber-500"></i> {{ $type }}
                     </h3>
 
-                    <p class="text-gray-500 mb-8 font-medium italic leading-relaxed group-hover:text-gray-200 transition-colors text-sm">
+                    <p class="text-gray-500 mb-8 font-medium italic leading-relaxed group-hover:text-gray-200 transition-colors text-sm text-left">
                         {{ $type == 'Visi' ? 'UKM PROTIC Politeknik Negeri Cilacap memiliki tujuan :' : 'Untuk mencapai tujuan tersebut UKM PROTIC mengimplementasikannya :' }}
                     </p>
 
@@ -78,7 +78,7 @@
                     ];
                 @endphp
                 @foreach($goals as $goal)
-                <div class="bg-white p-10 rounded-2xl border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:border-amber-500 group">
+                <div class="bg-white p-10 rounded-2xl border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:border-amber-500 group text-center">
                     <div class="text-[#0a362d] mb-6 text-5xl transition-all duration-300 group-hover:text-amber-500 group-hover:scale-110">
                         <i class="fa-solid fa-{{ $goal['icon'] }}"></i>
                     </div>
@@ -115,20 +115,21 @@
                     @endphp
 
                     <a href="{{ url('/divisi/' . $res['s']) }}" class="group relative flex flex-col items-center">
-                        <div class="relative overflow-hidden rounded-2xl shadow-2xl mb-6 aspect-[4/3] w-full bg-white/5 border border-white/10 p-2 backdrop-blur-sm transition-all duration-500 group-hover:border-amber-500/50 group-hover:-translate-y-2">
+                        <div class="relative overflow-hidden rounded-2xl shadow-2xl mb-6 aspect-[4/3] w-full bg-white/5 border border-white/10 p-2 transition-all duration-300 ease-out group-hover:border-amber-500/50 group-hover:-translate-y-2 will-change-transform">
+
                             <img src="{{ asset('img/' . $res['i']) }}"
-                                 class="w-full h-full object-cover rounded-xl transition duration-700 group-hover:scale-110"
+                                 class="w-full h-full object-cover rounded-xl transition duration-500 transform-gpu group-hover:scale-105"
                                  alt="{{ $div->divisi }}"
                                  onerror="this.src='{{ asset('img/default-team.jpg') }}'">
 
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d] via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a362d] via-transparent to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none"></div>
                         </div>
 
                         <div class="text-center">
                             <h4 class="text-green-100 text-[11px] font-bold uppercase tracking-[0.2em] italic transition duration-300 group-hover:text-amber-400">
                                 {{ $div->divisi }}
                             </h4>
-                            <div class="w-0 h-[2px] bg-amber-500 mx-auto mt-2 transition-all duration-300 group-hover:w-full"></div>
+                            <div class="w-0 h-[2px] bg-amber-500 mx-auto mt-2 transition-all duration-500 ease-in-out group-hover:w-full"></div>
                         </div>
                     </a>
                 @endforeach

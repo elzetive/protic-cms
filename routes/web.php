@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KasController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\ArsipController;
+use App\Http\Controllers\Admin\SuratController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
@@ -89,6 +90,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             Route::get('/tambah', 'tambah')->name('admin.arsip.tambah');
             Route::post('/simpan', 'store')->name('admin.arsip.store');
             Route::delete('/hapus/{id}', 'destroy')->name('admin.arsip.destroy');
+        });
+
+        Route::controller(SuratController::class)->group(function () {
+            Route::get('/surat-peminjaman', 'create')->name('admin.arsip.surat.create');
+            Route::post('/surat-peminjaman/proses', 'storeAndPrint')->name('admin.arsip.surat.proses');
         });
     });
 

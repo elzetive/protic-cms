@@ -82,27 +82,29 @@
         </div>
 
         <div class="relative group">
-            @if(request()->routeIs('admin.arsip.*'))
+            {{-- Deteksi status aktif jika berada di menu arsip indeks ataupun pembuatan surat --}}
+            @php $isArsipActive = request()->routeIs('admin.arsip.*'); @endphp
+            @if($isArsipActive)
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-[#f59e0b] rounded-r-full z-10"></div>
             @endif
-            <a href="{{ route('admin.arsip.index') }}" class="flex items-center sidebar-link-justify gap-3 px-5 py-3 rounded-xl text-[11px] uppercase tracking-[0.1em] transition-all duration-200 {{ getMenuClass(request()->routeIs('admin.arsip.*')) }}">
+            <a href="{{ route('admin.arsip.index') }}" class="flex items-center sidebar-link-justify gap-3 px-5 py-3 rounded-xl text-[11px] uppercase tracking-[0.1em] transition-all duration-200 {{ getMenuClass($isArsipActive) }}">
                 <i class="fa-solid fa-box-archive w-5 text-center shrink-0"></i>
                 <span class="sidebar-text">Arsip</span>
             </a>
         </div>
     </nav>
 
-<div class="p-4 border-t border-gray-50">
-    <a href="{{ route('beranda') }}" target="_blank"
-       class="flex items-center sidebar-link-justify gap-3 px-5 py-4 text-[#0a362d]/50 hover:text-[#f59e0b] transition-all group bg-gray-50/50 rounded-2xl"
-       title="Lihat Website">
-        <i class="fa-solid fa-earth-asia group-hover:rotate-180 transition-transform duration-700 text-center w-5 shrink-0"></i>
+    <div class="p-4 border-t border-gray-50">
+        <a href="{{ route('beranda') }}" target="_blank"
+           class="flex items-center sidebar-link-justify gap-3 px-5 py-4 text-[#0a362d]/50 hover:text-[#f59e0b] transition-all group bg-gray-50/50 rounded-2xl"
+           title="Lihat Website">
+            <i class="fa-solid fa-earth-asia group-hover:rotate-180 transition-transform duration-700 text-center w-5 shrink-0"></i>
 
-        <span class="sidebar-text text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap">
-            Lihat Website
-        </span>
-    </a>
-</div>
+            <span class="sidebar-text text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap">
+                Lihat Website
+            </span>
+        </a>
+    </div>
 </aside>
 
 <script>
