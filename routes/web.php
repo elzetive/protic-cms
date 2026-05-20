@@ -91,10 +91,14 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             Route::post('/simpan', 'store')->name('admin.arsip.store');
             Route::delete('/hapus/{id}', 'destroy')->name('admin.arsip.destroy');
         });
+    });
 
+    Route::prefix('surat')->group(function() {
         Route::controller(SuratController::class)->group(function () {
-            Route::get('/surat-peminjaman', 'create')->name('admin.arsip.surat.create');
-            Route::post('/surat-peminjaman/proses', 'storeAndPrint')->name('admin.arsip.surat.proses');
+            Route::get('/', 'index')->name('admin.surat.index');
+            Route::get('/tambah', 'create')->name('admin.surat.create');
+            Route::post('/simpan', 'storeAndPrint')->name('admin.surat.store');
+            Route::get('/cetak-ulang/{id}', 'printFromIndex')->name('admin.surat.cetak');
         });
     });
 

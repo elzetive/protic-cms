@@ -21,7 +21,7 @@
                 </a>
             @endif
 
-            <a href="{{ route('admin.arsip.surat.create') }}"
+            <a href="{{ route('admin.surat.create') }}"
                 class="bg-amber-500 text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-[#0a362d] transition-all shadow-md active:scale-95">
                 <i class="fa-solid fa-file-pen"></i> Buat Surat
             </a>

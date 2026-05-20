@@ -8,25 +8,31 @@ use App\Models\SuratModel;
 
 class SuratController extends Controller
 {
+    public function index()
+    {
+        $daftarSurat = SuratModel::latest()->get();
+        return view('admin.surat.index', compact('daftarSurat'));
+    }
+
     public function create()
     {
-        return view('admin.arsip.tambah_surat');
+        return view('admin.surat.tambah');
     }
 
     public function storeAndPrint(Request $request)
     {
         $request->validate([
-            'nomor_surat' => 'required',
-            'hal' => 'required',
-            'tujuan' => 'required',
-            'agenda_kegiatan' => 'required',
+            'nomor_surat'      => 'required',
+            'hal'              => 'required',
+            'tujuan'           => 'required',
+            'agenda_kegiatan'  => 'required',
             'tanggal_kegiatan' => 'required',
-            'waktu_kegiatan' => 'required',
-            'tempat_kegiatan' => 'required',
-            'nama_ketua' => 'required',
-            'nim_ketua' => 'required',
-            'nama_pembina' => 'required',
-            'nip_pembina' => 'required',
+            'waktu_kegiatan'   => 'required',
+            'tempat_kegiatan'  => 'required',
+            'nama_ketua'       => 'required',
+            'nim_ketua'        => 'required',
+            'nama_pembina'     => 'required',
+            'nip_pembina'      => 'required',
         ]);
 
         SuratModel::create([
@@ -45,6 +51,13 @@ class SuratController extends Controller
 
         $data = $request->all();
 
-        return view('admin.arsip.template_surat', compact('data'));
+        return view('admin.surat.template', compact('data'));
+    }
+
+    public function printFromIndex($id)
+    {
+        $surat = SuratModel::findOrFail($id);
+        $data = $surat->toArray();
+        return view('admin.surat.template', compact('data'));
     }
 }

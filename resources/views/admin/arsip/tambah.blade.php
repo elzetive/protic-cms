@@ -17,8 +17,8 @@
 
     <div class="flex items-center justify-between px-2">
         <div class="flex flex-col text-left">
-            <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Tambah Arsip</h1>
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1 italic">Unggah dokumen baru ke server PROTIC</p>
+            <h1 class="text-xl font-black text-[#0a362d] uppercase tracking-widest">Tambah Arsip Dokumen</h1>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1 italic">Unggah berkas dokumen baru ke server PROTIC</p>
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.arsip.index') }}" class="bg-gray-100 text-gray-500 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-all">
@@ -56,12 +56,11 @@
 
         <div class="md:col-span-2 space-y-4">
             <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm grid grid-cols-2 gap-6 uppercase text-left">
-
                 <div class="col-span-2 text-left">
                     <label class="block text-[11px] font-black text-[#0a362d] tracking-widest mb-2 ml-1">Nama Dokumen</label>
                     <input type="text" name="nama_dokumen" value="{{ old('nama_dokumen') }}" required
                         class="w-full bg-gray-50 border border-gray-100 py-3.5 px-5 rounded-2xl text-xs font-bold focus:outline-none focus:border-amber-500 transition-all uppercase placeholder:text-gray-300"
-                        placeholder="CONTOH: SURAT UNDANGAN RAPAT" oninput="this.value = this.value.toUpperCase()">
+                        placeholder="CONTOH: LAPORAN PERTANGGUNGJAWABAN PESTAPORA" oninput="this.value = this.value.toUpperCase()">
                 </div>
 
                 <div class="text-left">
